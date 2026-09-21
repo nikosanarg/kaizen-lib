@@ -40,12 +40,11 @@
   /* ---- Texto -------------------------------------------------------------
      Tres niveles. `subtle` es el piso: por debajo de eso no hay token porque
      no habría contraste suficiente, y el que lo necesite está pidiendo texto
-     ilegible. `on-accent` es el texto que va ENCIMA de un color de acento o
-     semántico, no sobre una superficie. */
+     ilegible. El texto que va ENCIMA de un color de acento o semántico no es
+     un nivel de `fg`: cada tono trae el suyo (`--kz-accent-fg`, `--kz-danger-fg`). */
   --kz-fg: #e8ecf1;
   --kz-fg-muted: #a3adba;
   --kz-fg-subtle: #8792a1;
-  --kz-fg-on-accent: #0b0d10;
 
   /* ---- Bordes y foco ----------------------------------------------------- */
   --kz-hairline: #262b33;
@@ -56,7 +55,7 @@
 
   /* ---- Acento ------------------------------------------------------------
      `soft` es el fondo lavado para chips y estados seleccionados; el texto que
-     va encima de `soft` es el acento mismo, no `fg-on-accent`. */
+     va encima de `soft` es el acento mismo, no `accent-fg`. */
   --kz-accent: #5a9df8;
   --kz-accent-hover: #78b0fa;
   --kz-accent-active: #3b82f6;
@@ -146,7 +145,6 @@
   --kz-fg: #12161c;
   --kz-fg-muted: #4d5762;
   --kz-fg-subtle: #656f7c;
-  --kz-fg-on-accent: #ffffff;
 
   --kz-hairline: #e1e6ec;
   --kz-hairline-strong: #c4ccd6;

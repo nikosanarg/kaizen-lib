@@ -39,14 +39,13 @@ export const surface = {
 } as const;
 
 /**
- * Color de texto. `onAccent` es el que va encima de un color de acento o
- * semántico — no sobre una superficie.
+ * Color de texto sobre una superficie. El texto que va encima de un color de
+ * acento o semántico es la ranura `fg` de ese tono (`accent.fg`, `danger.fg`).
  */
 export const fg = {
   DEFAULT: 'var(--kz-fg)',
   muted: 'var(--kz-fg-muted)',
   subtle: 'var(--kz-fg-subtle)',
-  onAccent: 'var(--kz-fg-on-accent)',
 } as const;
 
 /** Bordes de 1px. `strong` es para separar, no para decorar. */
