@@ -131,6 +131,7 @@ export const radius = {
 export const font = {
   family: 'var(--kz-font-family)',
   mono: 'var(--kz-font-mono)',
+  '2xs': 'var(--kz-font-2xs)',
   xs: 'var(--kz-font-xs)',
   sm: 'var(--kz-font-sm)',
   md: 'var(--kz-font-md)',

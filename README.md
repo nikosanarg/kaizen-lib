@@ -12,7 +12,7 @@ styled-components con `moduleResolution: "bundler"`, así que lo transpilan ello
 |---|---|---|
 | `kaizen-lib/tokens` | Referencias `var(--kz-*)` tipadas | listo |
 | `kaizen-lib/tokens.css` | Valores por defecto, tema oscuro y claro | listo |
-| `kaizen-lib/ui` | Componentes (por ahora `IconButton`) | en curso |
+| `kaizen-lib/ui` | Componentes (`IconButton`, `Medidor`) | en curso |
 
 ## Instalación
 
@@ -88,6 +88,36 @@ otro elemento —un `<Link>` de Next— sin que la librería dependa de Next. `s
 qué.
 
 La librería no trae íconos: cada producto usa los suyos.
+
+```tsx
+import { Medidor } from 'kaizen-lib/ui';
+
+<Medidor valor={8} maximo={10} sentido="menos-es-mejor" label="Anotados: 8 de 10" />
+```
+
+**`Medidor`** es un arco que dice cuánto de un total está ocupado, pintado por escalón. No es
+un control: es un `role="img"`, así que si el dato tiene que llevar a algún lado lo envuelve
+un link o un botón del producto. `label` es obligatorio y va en palabras — el arco y el
+número del centro son decorativos, y el color nunca es el único portador del significado.
+
+Los cuatro escalones salen de la **proporción** `valor / maximo`, no del valor (8 no significa
+lo mismo sobre 10 que sobre 22). Sobre una escala de 0 a 10: `10` tope, `8` a `9,99` alto,
+`4` a `7,99` medio, menos de `4` bajo. Cada corte es inclusivo abajo.
+
+`sentido` es obligatorio y decide qué extremo es el bueno, porque eso lo define lo que el
+número *significa* en el producto y no el componente:
+
+| Escalón | `menos-es-mejor` | `mas-es-mejor` |
+|---|---|---|
+| bajo (< 40%) | verde | rojo |
+| medio (40–79%) | azul | naranja |
+| alto (80–99%) | naranja | azul |
+| tope (100%) | rojo | verde |
+
+`menos-es-mejor` es "cuánto lugar queda": vacío es una oportunidad, lleno una puerta
+cerrada. `mas-es-mejor` es un progreso o una meta. Usa los tonos `success`, `info`,
+`warning` y `danger`, así que un producto que ya los definió no declara nada nuevo. El
+centro muestra `valor/maximo` y se reemplaza con `children` cuando el formato es del producto.
 
 ## Desarrollo
 

@@ -115,6 +115,7 @@
   --kz-font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --kz-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
+  --kz-font-2xs: 11px;
   --kz-font-xs: 12px;
   --kz-font-sm: 14px;
   --kz-font-md: 16px;
