@@ -121,6 +121,12 @@
   --kz-font-lg: 20px;
   --kz-font-xl: 26px;
   --kz-font-2xl: 34px;
+
+  /* ---- Movimiento --------------------------------------------------------
+     Una sola duración para los cambios de estado de un control (hover, foco,
+     encendido). Lo que necesite otra es una animación, no una transición. */
+  --kz-duration-fast: 120ms;
+  --kz-ease: cubic-bezier(0.2, 0, 0, 1);
 }
 
 /*

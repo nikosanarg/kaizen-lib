@@ -1,6 +1,6 @@
 {
   "name": "kaizen-lib",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Tokens y componentes compartidos entre los fronts de Kaizen.",
   "license": "MIT",
   "author": "Nicolás Sandobal",
@@ -14,12 +14,13 @@
   ],
   "files": [
     "src",
-    "!src/**/*.test.ts",
+    "!src/**/*.test.*",
     "!src/**/testing"
   ],
   "exports": {
     "./tokens": "./src/tokens/index.ts",
     "./tokens.css": "./src/tokens/defaults.css",
+    "./ui": "./src/ui/index.ts",
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -28,8 +29,20 @@
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm run test"
   },
+  "peerDependencies": {
+    "react": ">=19",
+    "styled-components": ">=6"
+  },
   "devDependencies": {
+    "@testing-library/react": "16.3.2",
+    "@testing-library/user-event": "14.6.1",
     "@types/node": "24.10.1",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "jsdom": "29.1.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "styled-components": "6.4.2",
     "typescript": "5.9.3",
     "vitest": "5.0.1"
   },

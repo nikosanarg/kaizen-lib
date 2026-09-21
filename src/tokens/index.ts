@@ -139,6 +139,12 @@ export const font = {
   '2xl': 'var(--kz-font-2xl)',
 } as const;
 
+/** Transición de un cambio de estado de control: hover, foco, encendido. */
+export const motion = {
+  fast: 'var(--kz-duration-fast)',
+  ease: 'var(--kz-ease)',
+} as const;
+
 export type Surface = keyof typeof surface;
 export type Space = keyof typeof space;
 export type Radius = keyof typeof radius;

@@ -12,7 +12,7 @@ styled-components con `moduleResolution: "bundler"`, así que lo transpilan ello
 |---|---|---|
 | `kaizen-lib/tokens` | Referencias `var(--kz-*)` tipadas | listo |
 | `kaizen-lib/tokens.css` | Valores por defecto, tema oscuro y claro | listo |
-| `kaizen-lib/ui` | Componentes | pendiente |
+| `kaizen-lib/ui` | Componentes (por ahora `IconButton`) | en curso |
 
 ## Instalación
 
@@ -65,6 +65,29 @@ mecanismo de tutipoker-school-front, el único consumidor con toggle real.
 
 **Elevación.** Cuatro niveles de uso fijo: `0` página, `1` panel, `2` card, `3` overlay.
 `sunken` es el pozo (inputs, tracks) y va más oscuro que su contenedor.
+
+## Componentes
+
+```tsx
+import { IconButton } from 'kaizen-lib/ui';
+
+<IconButton label="Cambiar tema" size="lg" onClick={alternar}>
+  <IconoLuna />
+</IconButton>
+
+<IconButton as={Link} href="/notificaciones" label="Notificaciones, 3 sin leer" badge={3}>
+  <IconoCampana />
+</IconButton>
+```
+
+**`IconButton`** es el botón redondo de sólo ícono de una topbar. `label` es obligatorio
+(es el nombre accesible). Con `badge` dibuja un contador, y ese número es decorativo: la
+cuenta va dentro del `label`, porque el idioma no es asunto de la librería. Con `as` toma
+otro elemento —un `<Link>` de Next— sin que la librería dependa de Next. `size="lg"` es el
+área táctil de 44px. Con `motivo` queda bloqueado pero enfocable, para poder mostrar por
+qué.
+
+La librería no trae íconos: cada producto usa los suyos.
 
 ## Desarrollo
 

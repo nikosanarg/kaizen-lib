@@ -88,7 +88,8 @@ describe('el tema claro no inventa tokens', () => {
       segunda fuente para un valor que no depende del tema.
     */
     const esDependienteDelTema = (name: string) =>
-      !/^--kz-(space|radius|font)-/.test(name) && name !== '--kz-font-family' && name !== '--kz-font-mono';
+      !/^--kz-(space|radius|font|duration)-/.test(name) &&
+      !['--kz-font-family', '--kz-font-mono', '--kz-ease'].includes(name);
 
     const esperados = [...declaredInRoot()].filter(esDependienteDelTema).sort();
 
