@@ -1,0 +1,181 @@
+/*
+  Valores por defecto de los tokens de kaizen-lib.
+
+  Importar este archivo es OPCIONAL y sirve para dos cosas: arrancar un
+  proyecto sin definir nada, y tener un valor de respaldo para cada token
+  mientras la adopción es parcial. Un producto con identidad propia redefine
+  los que le importan en su propio `globals.css`, después de este import.
+
+  La paleta es deliberadamente neutra: gris azulado y un azul de acento. No es
+  la marca de ningún producto y no debería serlo — si se pareciera a alguno, el
+  resto heredaría esa identidad sin haberla elegido.
+
+  Tema: oscuro en `:root`, claro cuando `<html>` lleva la clase `light`. El
+  mecanismo sale de tutipoker-school-front, el único consumidor con un toggle
+  real (`context/useDarkMode.tsx`), para no inventar un tercero.
+
+  Los pares de contraste de estos valores los verifica `defaults.test.ts`
+  contra los mínimos de WCAG 2.1. Si cambiás un color, corré los tests: el
+  número lo da la suite, no el ojo.
+*/
+
+:root {
+  /* ---- Superficies -------------------------------------------------------
+     Cuatro niveles de elevación con uso fijo; no se mezclan libremente. El
+     modelo viene de kaizen-next, que es el que lo dejó explícito.
+       0  fondo de página
+       1  panel o sección
+       2  card dentro de un panel
+       3  overlay: modal, popover, dropdown
+     `sunken` es el pozo: va más oscuro que su contenedor (inputs, tracks,
+     wells), así que no es un quinto nivel de la escala sino su opuesto. */
+  --kz-surface-0: #0b0d10;
+  --kz-surface-1: #14171c;
+  --kz-surface-2: #1b1f26;
+  --kz-surface-3: #232830;
+  --kz-surface-sunken: #07080a;
+  --kz-surface-hover: #262c35;
+  --kz-surface-active: #2e3540;
+
+  /* ---- Texto -------------------------------------------------------------
+     Tres niveles. `subtle` es el piso: por debajo de eso no hay token porque
+     no habría contraste suficiente, y el que lo necesite está pidiendo texto
+     ilegible. `on-accent` es el texto que va ENCIMA de un color de acento o
+     semántico, no sobre una superficie. */
+  --kz-fg: #e8ecf1;
+  --kz-fg-muted: #a3adba;
+  --kz-fg-subtle: #8792a1;
+  --kz-fg-on-accent: #0b0d10;
+
+  /* ---- Bordes y foco ----------------------------------------------------- */
+  --kz-hairline: #262b33;
+  --kz-hairline-strong: #3a424e;
+  /* Anillo de foco. Es un elemento no textual: el mínimo que le aplica es
+     3:1, no 4.5:1. */
+  --kz-ring: #5b9dff;
+
+  /* ---- Acento ------------------------------------------------------------
+     `soft` es el fondo lavado para chips y estados seleccionados; el texto que
+     va encima de `soft` es el acento mismo, no `fg-on-accent`. */
+  --kz-accent: #5a9df8;
+  --kz-accent-hover: #78b0fa;
+  --kz-accent-active: #3b82f6;
+  --kz-accent-soft: rgba(90, 157, 248, 0.16);
+  --kz-accent-fg: #06111f;
+
+  /* ---- Tonos semánticos --------------------------------------------------
+     Cuatro tonos × tres ranuras. `danger` y `warning` ganan sobre `error` y
+     `warn` por ser los nombres que más consumidores ya usaban. */
+  --kz-success: #3ad07d;
+  --kz-success-soft: rgba(58, 208, 125, 0.16);
+  --kz-success-fg: #04180d;
+
+  --kz-danger: #f87171;
+  --kz-danger-soft: rgba(248, 113, 113, 0.16);
+  --kz-danger-fg: #1d0505;
+
+  --kz-warning: #f0ab3e;
+  --kz-warning-soft: rgba(240, 171, 62, 0.16);
+  --kz-warning-fg: #1c1002;
+
+  --kz-info: #56c4f5;
+  --kz-info-soft: rgba(86, 196, 245, 0.16);
+  --kz-info-fg: #04161f;
+
+  /* ---- Sombras ----------------------------------------------------------- */
+  --kz-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --kz-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --kz-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --kz-shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.6);
+
+  /* ---- Espaciado ---------------------------------------------------------
+     Escala en pasos de 4px. Los saltos (no hay 7, 9, 11) son a propósito: una
+     escala continua no es una escala, es un número libre con prefijo. */
+  --kz-space-1: 4px;
+  --kz-space-2: 8px;
+  --kz-space-3: 12px;
+  --kz-space-4: 16px;
+  --kz-space-5: 20px;
+  --kz-space-6: 24px;
+  --kz-space-8: 32px;
+  --kz-space-10: 40px;
+  --kz-space-12: 48px;
+  --kz-space-16: 64px;
+
+  /* ---- Radios ------------------------------------------------------------
+     No hay token para 0: eso es `0`, y darle nombre sólo agrega una
+     indirección que hay que resolver al leer. */
+  --kz-radius-sm: 4px;
+  --kz-radius-md: 8px;
+  --kz-radius-lg: 12px;
+  --kz-radius-xl: 20px;
+  --kz-radius-pill: 999px;
+  --kz-radius-circle: 50%;
+
+  /* ---- Tipografía -------------------------------------------------------- */
+  --kz-font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --kz-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --kz-font-xs: 12px;
+  --kz-font-sm: 14px;
+  --kz-font-md: 16px;
+  --kz-font-lg: 20px;
+  --kz-font-xl: 26px;
+  --kz-font-2xl: 34px;
+}
+
+/*
+  Tema claro. Sólo se redefine lo que cambia —color y sombra—: espaciado,
+  radios y tipografía valen igual en los dos temas y repetirlos acá sería una
+  segunda fuente que algún día diverge.
+
+  Las superficies no se "aclaran" una a una: se invierte la relación. En
+  oscuro la página es lo más negro y las cards suben; en claro la página es
+  gris y las cards son blancas. Por eso 1, 2 y 3 son todas blancas y lo que
+  las separa del fondo es el hairline.
+*/
+:root.light {
+  --kz-surface-0: #f4f6f9;
+  --kz-surface-1: #ffffff;
+  --kz-surface-2: #ffffff;
+  --kz-surface-3: #ffffff;
+  --kz-surface-sunken: #e8ecf1;
+  --kz-surface-hover: #eef1f5;
+  --kz-surface-active: #e2e7ee;
+
+  --kz-fg: #12161c;
+  --kz-fg-muted: #4d5762;
+  --kz-fg-subtle: #656f7c;
+  --kz-fg-on-accent: #ffffff;
+
+  --kz-hairline: #e1e6ec;
+  --kz-hairline-strong: #c4ccd6;
+  --kz-ring: #1d4ed8;
+
+  --kz-accent: #1d62d8;
+  --kz-accent-hover: #1a56bf;
+  --kz-accent-active: #17499f;
+  --kz-accent-soft: rgba(29, 98, 216, 0.12);
+  --kz-accent-fg: #ffffff;
+
+  --kz-success: #11763d;
+  --kz-success-soft: rgba(17, 118, 61, 0.12);
+  --kz-success-fg: #ffffff;
+
+  --kz-danger: #c02626;
+  --kz-danger-soft: rgba(192, 38, 38, 0.12);
+  --kz-danger-fg: #ffffff;
+
+  --kz-warning: #96500a;
+  --kz-warning-soft: rgba(150, 80, 10, 0.12);
+  --kz-warning-fg: #ffffff;
+
+  --kz-info: #0b5f8a;
+  --kz-info-soft: rgba(11, 95, 138, 0.12);
+  --kz-info-fg: #ffffff;
+
+  --kz-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.08);
+  --kz-shadow-md: 0 4px 12px rgba(16, 24, 40, 0.1);
+  --kz-shadow-lg: 0 10px 30px rgba(16, 24, 40, 0.12);
+  --kz-shadow-xl: 0 24px 60px rgba(16, 24, 40, 0.16);
+}
