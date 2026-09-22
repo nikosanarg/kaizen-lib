@@ -12,7 +12,7 @@ styled-components con `moduleResolution: "bundler"`, así que lo transpilan ello
 |---|---|---|
 | `kaizen-lib/tokens` | Referencias `var(--kz-*)` tipadas | listo |
 | `kaizen-lib/tokens.css` | Valores por defecto, tema oscuro y claro | listo |
-| `kaizen-lib/ui` | Componentes (`IconButton`, `Medidor`, `Relieve`) | en curso |
+| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`) | en curso |
 
 ## Instalación
 
@@ -88,6 +88,36 @@ otro elemento —un `<Link>` de Next— sin que la librería dependa de Next. `s
 qué.
 
 La librería no trae íconos: cada producto usa los suyos.
+
+```tsx
+import { ReactionButton } from 'kaizen-lib/ui';
+
+<ReactionButton tone="danger" active={likeado} glow count={likes} label={`Me gusta, ${likes}`}>
+  <IconoCorazon />
+</ReactionButton>
+```
+
+**`ReactionButton`** es un ícono que cambia de color al reaccionar (`tone`: `neutral` |
+`accent` | `success` | `danger` | `warning` | `info`), con resplandor opcional (`glow`,
+del mismo color vía `currentColor`) y una cuenta al lado (`count`; `0` se muestra, no es
+una ausencia). No es `IconButton` con más props: **nunca tiñe el fondo**. `IconButton` es
+"esto está seleccionado" (la página actual, un filtro aplicado) y por eso tiñe el círculo
+entero; `ReactionButton` es "reaccioné con esto" (un me gusta, un guardado), y ahí sólo el
+ícono cambia — un corazón marcado no necesita, además, un círculo rosa detrás.
+
+Un color que los seis tonos no cubren —la marca de un producto, no una categoría
+semántica— se pisa con `style`, porque el color activo sale de la variable CSS
+`--kz-icon-on` y un estilo en línea le gana a la regla de la librería:
+
+```tsx
+<ReactionButton
+  active={guardado}
+  style={{ '--kz-icon-on': 'var(--mi-color-de-marca)' } as React.CSSProperties}
+  label="Guardar"
+>
+  <IconoMarcador />
+</ReactionButton>
+```
 
 ```tsx
 import { Medidor } from 'kaizen-lib/ui';

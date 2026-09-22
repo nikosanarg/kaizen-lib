@@ -2,17 +2,10 @@
 
 import type { ComponentPropsWithoutRef, ElementType, MouseEvent } from 'react';
 import styled, { css } from 'styled-components';
-import { accent, danger, fg, font, motion, radius, ring, surface } from '../tokens';
+import { accent, danger, fg, font, radius, surface } from '../tokens';
+import { formaBase, type IconButtonSize } from './shell';
 
-export type IconButtonSize = 'sm' | 'md' | 'lg';
-
-/**
- * Lado del círculo, en px. `lg` es el área táctil mínima de una topbar móvil
- * (44px): si el control va en una barra que se toca con el pulgar, es el que
- * corresponde. No son tokens porque son medidas de este componente, no una
- * escala que otros usen.
- */
-const LADO: Record<IconButtonSize, number> = { sm: 32, md: 40, lg: 44 };
+export type { IconButtonSize };
 
 /** Tope del badge: "+9" ocupa lo mismo que un dígito y dice lo mismo. */
 const BADGE_MAXIMO = 9;
@@ -53,35 +46,9 @@ type Props<T extends ElementType> = Propios & {
 } & Omit<ComponentPropsWithoutRef<T>, keyof Propios | 'as'>;
 
 const Raiz = styled.button<{ $size: IconButtonSize; $active: boolean }>`
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: ${({ $size }) => LADO[$size]}px;
-  height: ${({ $size }) => LADO[$size]}px;
-  padding: 0;
-  border: none;
-  border-radius: ${radius.circle};
+  ${({ $size }) => formaBase($size)}
   background: ${({ $active }) => ($active ? accent.soft : 'transparent')};
   color: ${({ $active }) => ($active ? accent.DEFAULT : fg.muted)};
-  font-family: inherit;
-  text-decoration: none;
-  cursor: pointer;
-  transition:
-    background ${motion.fast} ${motion.ease},
-    color ${motion.fast} ${motion.ease};
-
-  svg {
-    display: block;
-    width: 22px;
-    height: 22px;
-  }
-
-  &:focus-visible {
-    outline: 2px solid ${ring};
-    outline-offset: 2px;
-  }
 
   ${({ $active }) =>
     !$active &&
@@ -95,11 +62,6 @@ const Raiz = styled.button<{ $size: IconButtonSize; $active: boolean }>`
         background: ${surface.active};
       }
     `}
-
-  &[aria-disabled='true'] {
-    opacity: 0.45;
-    cursor: not-allowed;
-  }
 `;
 
 const Contador = styled.span`
