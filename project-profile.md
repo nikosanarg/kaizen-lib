@@ -67,8 +67,10 @@ tests y **no** se exporta.
 
 - Registro de cambios (changelog): no hay.
 - Documento de convenciones compartidas: `README.md`.
-- Convención de versionado: semver; mientras sea `0.x`, un cambio de contrato puede ir en
-  un minor.
+- Convención de versionado: semver, pero el bump lo decide quien pide el cambio, no el
+  tamaño del diff. Por defecto se sube **patch**, incluso cuando el cambio agrega un
+  componente o un token. Subir **minor** o **major** requiere que se pida explícitamente
+  — no se infiere de que el cambio sea "aditivo" o de que rompa contrato.
 
 ## Control de versiones
 
