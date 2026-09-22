@@ -177,6 +177,7 @@ import { LangSelector } from 'kaizen-lib/ui';
 <LangSelector
   actual={i18n.language}
   onChange={(codigo) => i18n.changeLanguage(codigo)}
+  etiqueta={(siguiente) => `Cambiar idioma a ${siguiente.nombre}`}
   opciones={[
     { codigo: 'es', nombre: 'Español', icono: <ReactCountryFlag countryCode="AR" /> },
     { codigo: 'en', nombre: 'English', icono: <ReactCountryFlag countryCode="US" /> },
@@ -189,9 +190,12 @@ cada tap y muestra el ícono del idioma actual, con el relieve de `Relieve` ya i
 (a diferencia de `IconButton`, acá no hace falta envolverlo aparte — todo consumidor lo
 quería). No trae banderas — mismo criterio que `IconButton` no trae íconos —, así que
 `icono` es cosa del producto; `react-country-flag` (ya usado en tuxon-front) es una
-opción probada. `onChange` recibe el código de la opción siguiente; qué hacer con eso
-(`i18n.changeLanguage`, `next-intl`, lo que sea) es del producto — la librería no sabe
-qué mecanismo de traducción hay atrás.
+opción probada. `etiqueta` arma el nombre accesible a partir de la opción siguiente y la
+actual — es obligatoria y sin default: la frase y el idioma son del producto (dos ya
+difieren: uno anuncia el destino, "Cambiar idioma a English"; otro el estado, "Idioma:
+English. Cambiar idioma"). `onChange` recibe el código de la opción siguiente; qué hacer
+con eso (`i18n.changeLanguage`, `next-intl`, lo que sea) es del producto — la librería no
+sabe qué mecanismo de traducción hay atrás.
 
 ## Desarrollo
 

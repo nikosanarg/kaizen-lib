@@ -24,6 +24,15 @@ type Props<T extends string> = {
   opciones: OpcionDeIdioma<T>[];
   actual: T;
   onChange: (codigo: T) => void;
+  /**
+   * Arma el nombre accesible del botón, a partir de la opción actual y la
+   * siguiente (a la que se pasa al tocar). Obligatoria y sin default: qué
+   * frase decir y en qué idioma es del producto, la librería no lo fija.
+   * Dos productos ya difieren en esto mismo — uno anuncia el destino
+   * ("Cambiar idioma a English"), otro el estado ("Idioma: English. Cambiar
+   * idioma") — y los dos son legítimos.
+   */
+  etiqueta: (siguiente: OpcionDeIdioma<T>, actual: OpcionDeIdioma<T>) => string;
   size?: IconButtonSize;
 };
 
@@ -45,6 +54,7 @@ type Props<T extends string> = {
  * <LangSelector
  *   actual={idiomaActual}
  *   onChange={(codigo) => i18n.changeLanguage(codigo)}
+ *   etiqueta={(siguiente) => `Cambiar idioma a ${siguiente.nombre}`}
  *   opciones={[
  *     { codigo: 'es', nombre: 'Español', icono: <ReactCountryFlag countryCode="AR" /> },
  *     { codigo: 'en', nombre: 'English', icono: <ReactCountryFlag countryCode="US" /> },
@@ -52,7 +62,7 @@ type Props<T extends string> = {
  * />
  * ```
  */
-export function LangSelector<T extends string>({ opciones, actual, onChange, size = 'lg' }: Props<T>) {
+export function LangSelector<T extends string>({ opciones, actual, onChange, etiqueta, size = 'lg' }: Props<T>) {
   // Sin opciones no hay nada que ciclar. Defensivo: un selector de idioma
   // vacío es un error de uso, no algo que la librería deba explicar.
   if (opciones.length === 0) return null;
@@ -63,7 +73,7 @@ export function LangSelector<T extends string>({ opciones, actual, onChange, siz
 
   return (
     <Relieve>
-      <IconButton size={size} label={`Cambiar idioma a ${siguiente.nombre}`} onClick={() => onChange(siguiente.codigo)}>
+      <IconButton size={size} label={etiqueta(siguiente, opcionActual)} onClick={() => onChange(siguiente.codigo)}>
         {opcionActual.icono}
       </IconButton>
     </Relieve>
