@@ -14,6 +14,26 @@ styled-components con `moduleResolution: "bundler"`, así que lo transpilan ello
 | `kaizen-lib/tokens.css` | Valores por defecto, tema oscuro y claro | listo |
 | `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`) | en curso |
 
+## ¿Qué uso para qué?
+
+Antes de escribir un `styled.button` a mano o un ciclador de idioma propio, revisá esta
+tabla. Si tu caso está acá, es un defecto reconstruirlo local — usá esto, y si no
+alcanza, extendé el componente en vez de bypassearlo (ver `implement.md` del harness:
+"un duplicado local de algo que ya existe compartido se reemplaza por el compartido").
+
+| Necesito... | Uso | No es... |
+|---|---|---|
+| Un botón redondo de sólo ícono en una topbar (notificaciones, perfil, cerrar) | `IconButton` | — |
+| Que ese botón tenga fondo teñido cuando está seleccionado (la página actual, un filtro aplicado) | `IconButton` con `active` | `ReactionButton` (ver abajo, distinción a propósito) |
+| Un ícono que cambia de color al reaccionar (me gusta, guardar, favorito) — **sin** fondo teñido | `ReactionButton` | `IconButton` con `active` |
+| El relieve neumórfico (círculo con sombra, sin relleno) alrededor de un `IconButton` | `Relieve` envolviendo el `IconButton` | una prop de `IconButton` — ver por qué en su docblock |
+| Un ciclador de idioma con banderas en la topbar | `LangSelector` | reconstruir el ciclado a mano — ya lo resuelve, con `Relieve` incluido |
+| Un arco/medidor que muestra cuánto de un total está ocupado | `Medidor` | un `<progress>` o una barra propia |
+| Espaciado, radios, color, tipografía, sombra | `kaizen-lib/tokens` (`space`, `radius`, `fg`, `accent`, `font`, `shadow`, `relief`...) | un valor a mano — cada uno es una referencia `var(--kz-*)` |
+
+Ningún componente trae íconos ni banderas: los recibe como `children`/`icono`, y el
+producto elige de dónde salen (`react-icons`, `react-country-flag`, SVG propio).
+
 ## Instalación
 
 ```bash
