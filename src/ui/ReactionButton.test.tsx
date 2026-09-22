@@ -117,3 +117,32 @@ describe('ReactionButton — comportamiento', () => {
     expect(boton.getAttribute('title')).toBe('Iniciá sesión para reaccionar');
   });
 });
+
+describe('ReactionButton — un color o un resplandor que ningún tono cubre', () => {
+  it('style pisa --kz-icon-on: un producto puede usar un color propio sin tocar la librería', () => {
+    render(
+      <ReactionButton label="Guardar" style={{ '--kz-icon-on': '#7ab3d9' } as React.CSSProperties}>
+        <Icono />
+      </ReactionButton>,
+    );
+
+    expect(getComputedStyle(screen.getByRole('button')).getPropertyValue('--kz-icon-on').trim()).toBe('#7ab3d9');
+  });
+
+  it('style pisa --kz-icon-glow: una intensidad propia sin tocar la librería', () => {
+    render(
+      <ReactionButton
+        label="Me gusta"
+        active
+        glow
+        style={{ '--kz-icon-glow': '0 0 8px rgba(255, 77, 109, 0.75)' } as React.CSSProperties}
+      >
+        <Icono />
+      </ReactionButton>,
+    );
+
+    expect(getComputedStyle(screen.getByRole('button')).getPropertyValue('--kz-icon-glow').trim()).toBe(
+      '0 0 8px rgba(255, 77, 109, 0.75)',
+    );
+  });
+});

@@ -55,11 +55,11 @@ const Raiz = styled.button<{ $size: IconButtonSize; $tone: ReactionTone; $active
   padding: 0 8px;
   background: transparent;
   --kz-icon-on: ${({ $tone }) => TONO_ENCENDIDO[$tone]};
+  --kz-icon-glow: ${({ $glow }) => ($glow ? '0 0 8px color-mix(in srgb, currentColor 65%, transparent)' : 'none')};
   color: ${({ $active }) => ($active ? 'var(--kz-icon-on)' : fg.muted)};
 
   svg {
-    filter: ${({ $active, $glow }) =>
-      $active && $glow ? 'drop-shadow(0 0 8px color-mix(in srgb, currentColor 65%, transparent))' : 'none'};
+    filter: ${({ $active }) => ($active ? 'drop-shadow(var(--kz-icon-glow))' : 'none')};
     transition: filter ${motion.fast} ${motion.ease};
   }
 
@@ -94,14 +94,19 @@ const Cuenta = styled.span`
  * ```
  *
  * Un color que los seis tonos no cubren (la marca de un producto, no una
- * categoría semántica) se pisa con `style`, ya que `--kz-icon-on` es una
- * variable CSS común y un estilo en línea le gana a la de acá:
+ * categoría semántica), o una intensidad de resplandor propia y no la
+ * genérica de `glow`, se pisan con `style`: `--kz-icon-on` y `--kz-icon-glow`
+ * son variables CSS comunes, y un estilo en línea le gana a la de acá por
+ * origen, no por especificidad — no hace falta tocar la librería por un
+ * color o un resplandor que ningún otro consumidor va a repetir.
  *
  * ```tsx
  * <ReactionButton
  *   active={guardado}
- *   glow
- *   style={{ '--kz-icon-on': 'var(--mi-color-de-marca)' } as React.CSSProperties}
+ *   style={{
+ *     '--kz-icon-on': 'var(--mi-color-de-marca)',
+ *     '--kz-icon-glow': '0 0 8px rgba(255, 77, 109, 0.75)',
+ *   } as React.CSSProperties}
  *   label="Guardar"
  * >
  *   <IconoMarcador />
