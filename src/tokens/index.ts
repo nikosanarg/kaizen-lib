@@ -104,6 +104,17 @@ export const shadow = {
   xl: 'var(--kz-shadow-xl)',
 } as const;
 
+/**
+ * Relieve neumórfico: el par de sombras opuestas que usa `Relieve` (`ui/`).
+ * `out` es el reposo y el hover fuerte, `in` es el presionado o "esto está
+ * prendido" — ver el docblock de `Relieve` para cuándo va cada uno.
+ */
+export const relief = {
+  out: 'var(--kz-relief-out)',
+  outStrong: 'var(--kz-relief-out-strong)',
+  in: 'var(--kz-relief-in)',
+} as const;
+
 /** Escala de espaciado, en pasos de 4px. Las claves salteadas son a propósito. */
 export const space = {
   1: 'var(--kz-space-1)',

@@ -12,7 +12,7 @@ styled-components con `moduleResolution: "bundler"`, así que lo transpilan ello
 |---|---|---|
 | `kaizen-lib/tokens` | Referencias `var(--kz-*)` tipadas | listo |
 | `kaizen-lib/tokens.css` | Valores por defecto, tema oscuro y claro | listo |
-| `kaizen-lib/ui` | Componentes (`IconButton`, `Medidor`) | en curso |
+| `kaizen-lib/ui` | Componentes (`IconButton`, `Medidor`, `Relieve`) | en curso |
 
 ## Instalación
 
@@ -118,6 +118,28 @@ número *significa* en el producto y no el componente:
 cerrada. `mas-es-mejor` es un progreso o una meta. Usa los tonos `success`, `info`,
 `warning` y `danger`, así que un producto que ya los definió no declara nada nuevo. El
 centro muestra `valor/maximo` y se reemplaza con `children` cuando el formato es del producto.
+
+```tsx
+import { IconButton, Relieve } from 'kaizen-lib/ui';
+import Link from 'next/link';
+
+<Relieve>
+  <IconButton label="Notificaciones, 3 sin leer" badge={3}><IconoCampana /></IconButton>
+</Relieve>
+
+<Relieve $prendido={enPerfil}>
+  <IconButton as={Link} href="/perfil" active={enPerfil} label="Perfil"><IconoPerfil /></IconButton>
+</Relieve>
+```
+
+**`Relieve`** envuelve a `IconButton` con el relieve neumórfico: un círculo sin relleno ni
+borde, dibujado por un par de sombras opuestas (`--kz-relief-out`) que se invierten al
+presionar (`--kz-relief-in`) o con `$prendido` (el equivalente sostenido de "esto está
+activo" o "vos estás acá"). Es un `<span>` alrededor del control y no un
+`styled(IconButton)`: `IconButton` es polimórfico (`as`), y styled-components
+intercepta el `as` de cualquier componente que envuelve, así que envolverlo así lo haría
+saltear toda su lógica. El relieve es neutro por defecto (negro/blanco) — un producto con
+marca lo tiñe redefiniendo esos tres tokens, igual que con cualquier otro.
 
 ## Desarrollo
 

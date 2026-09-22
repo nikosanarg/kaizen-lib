@@ -87,6 +87,17 @@
   --kz-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
   --kz-shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.6);
 
+  /* ---- Relieve neumórfico -------------------------------------------------
+     Par de sombras opuestas para un control sin relleno ni borde: el círculo
+     lo dibuja la luz, no un fondo. `out` es el reposo, `out-strong` el hover
+     y `in` (invertida) el presionado o el "esto está activo". Neutras —negro
+     y blanco— porque la paleta por defecto ya lo es; un producto con marca
+     las tiñe (ver Relieve en ui/, y el ejemplo de mixbol-front en el README:
+     ahí la sombra oscura sale del azul de marca, no de un negro genérico). */
+  --kz-relief-out: 3px 3px 7px rgba(0, 0, 0, 0.5), -3px -3px 7px rgba(255, 255, 255, 0.05);
+  --kz-relief-out-strong: 4px 4px 10px rgba(0, 0, 0, 0.6), -4px -4px 10px rgba(255, 255, 255, 0.08);
+  --kz-relief-in: inset 3px 3px 6px rgba(0, 0, 0, 0.55), inset -3px -3px 6px rgba(255, 255, 255, 0.06);
+
   /* ---- Espaciado ---------------------------------------------------------
      Escala en pasos de 4px. Los saltos (no hay 7, 9, 11) son a propósito: una
      escala continua no es una escala, es un número libre con prefijo. */
@@ -183,4 +194,8 @@
   --kz-shadow-md: 0 4px 12px rgba(16, 24, 40, 0.1);
   --kz-shadow-lg: 0 10px 30px rgba(16, 24, 40, 0.12);
   --kz-shadow-xl: 0 24px 60px rgba(16, 24, 40, 0.16);
+
+  --kz-relief-out: 3px 3px 6px rgba(16, 24, 40, 0.14), -3px -3px 6px rgba(255, 255, 255, 0.9);
+  --kz-relief-out-strong: 4px 4px 9px rgba(16, 24, 40, 0.18), -4px -4px 9px rgba(255, 255, 255, 0.95);
+  --kz-relief-in: inset 3px 3px 6px rgba(16, 24, 40, 0.16), inset -3px -3px 6px rgba(255, 255, 255, 0.85);
 }
