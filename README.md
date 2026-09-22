@@ -12,7 +12,7 @@ styled-components con `moduleResolution: "bundler"`, así que lo transpilan ello
 |---|---|---|
 | `kaizen-lib/tokens` | Referencias `var(--kz-*)` tipadas | listo |
 | `kaizen-lib/tokens.css` | Valores por defecto, tema oscuro y claro | listo |
-| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`) | en curso |
+| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`) | en curso |
 
 ## Instalación
 
@@ -170,6 +170,28 @@ activo" o "vos estás acá"). Es un `<span>` alrededor del control y no un
 intercepta el `as` de cualquier componente que envuelve, así que envolverlo así lo haría
 saltear toda su lógica. El relieve es neutro por defecto (negro/blanco) — un producto con
 marca lo tiñe redefiniendo esos tres tokens, igual que con cualquier otro.
+
+```tsx
+import { LangSelector } from 'kaizen-lib/ui';
+
+<LangSelector
+  actual={i18n.language}
+  onChange={(codigo) => i18n.changeLanguage(codigo)}
+  opciones={[
+    { codigo: 'es', nombre: 'Español', icono: <ReactCountryFlag countryCode="AR" /> },
+    { codigo: 'en', nombre: 'English', icono: <ReactCountryFlag countryCode="US" /> },
+  ]}
+/>
+```
+
+**`LangSelector`** es el botón de idioma de una topbar: cicla a la siguiente opción en
+cada tap y muestra el ícono del idioma actual, con el relieve de `Relieve` ya incluido
+(a diferencia de `IconButton`, acá no hace falta envolverlo aparte — todo consumidor lo
+quería). No trae banderas — mismo criterio que `IconButton` no trae íconos —, así que
+`icono` es cosa del producto; `react-country-flag` (ya usado en tuxon-front) es una
+opción probada. `onChange` recibe el código de la opción siguiente; qué hacer con eso
+(`i18n.changeLanguage`, `next-intl`, lo que sea) es del producto — la librería no sabe
+qué mecanismo de traducción hay atrás.
 
 ## Desarrollo
 
