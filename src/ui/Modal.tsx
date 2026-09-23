@@ -111,11 +111,20 @@ const Descripcion = styled.p`
   color: ${fg.muted};
 `;
 
-const Body = styled.div<{ $flush: boolean }>`
+const Body = styled.div<{ $flush: boolean; $conFooter: boolean }>`
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
-  padding: ${({ $flush }) => ($flush ? space[6] : `0 ${space[6]} ${space[2]}`)};
+  padding: ${({ $flush, $conFooter }) => {
+    const arriba = $flush ? space[6] : '0';
+    /* Con footer, el aire de abajo lo pone el footer (su propio padding-top);
+       duplicarlo acá deja un salto más grande que el de los costados. Sin
+       footer, el cuerpo es lo último del panel y necesita el mismo aire que
+       los costados — dejarlo en el valor reducido pensado para el otro caso
+       deja un borde inferior visiblemente más fino que el resto. */
+    const abajo = $conFooter ? space[2] : space[6];
+    return `${arriba} ${space[6]} ${abajo}`;
+  }};
 `;
 
 const Footer = styled.footer`
@@ -332,7 +341,7 @@ export function Modal({
           </Header>
         ) : null}
 
-        <Body $flush={!title}>{children}</Body>
+        <Body $flush={!title} $conFooter={Boolean(footer)}>{children}</Body>
 
         {footer ? <Footer>{footer}</Footer> : null}
       </Panel>
