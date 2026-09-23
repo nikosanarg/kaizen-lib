@@ -242,7 +242,9 @@ Sin `title` no hay nombre accesible propio — pasá `ariaLabel`. `size` (`sm`|`
 fija el ancho máximo del panel; `maxWidth` lo pisa con un valor explícito. `disableClose`
 bloquea la X, el overlay y `Escape` a la vez — para una operación en curso, no para "no
 quiero que cierre nunca". `dismissOnOverlay={false}` sólo desactiva el click afuera, para
-un formulario a medio llenar que sigue queriendo cerrar con la X o `Escape`.
+un formulario a medio llenar que sigue queriendo cerrar con la X o `Escape`. `closeLabel`
+(default `'Cerrar'`) es el nombre accesible de la X — mismo criterio que `etiqueta` de
+`LangSelector`: un consumidor con más de un idioma lo pisa, el resto no lo toca.
 
 Lo que **no** trae: un `placement` lateral (drawer) y un padding compacto de cuerpo son
 casos de un solo consumidor cada uno (`components/ui/Dialog` de valle-verde) — se resuelven

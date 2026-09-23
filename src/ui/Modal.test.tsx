@@ -49,6 +49,16 @@ describe('Modal', () => {
     expect(onClose).toHaveBeenCalledOnce();
   });
 
+  it('closeLabel pisa el nombre accesible del botón de cierre', async () => {
+    render(
+      <Modal open onClose={vi.fn()} title="Delete" closeLabel="Close">
+        contenido
+      </Modal>,
+    );
+
+    expect(await screen.findByRole('button', { name: 'Close' })).toBeTruthy();
+  });
+
   it('Escape cierra', async () => {
     const onClose = vi.fn();
     render(

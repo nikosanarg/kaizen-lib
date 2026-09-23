@@ -185,6 +185,12 @@ type Props = {
   maxWidth?: string;
   /** Botón de cierre en la esquina. Default `true`. */
   showClose?: boolean;
+  /**
+   * Nombre accesible del botón de cierre. Default `'Cerrar'` — mismo criterio
+   * que `LangSelector.etiqueta`: un consumidor con más de un idioma lo pisa,
+   * el resto no necesita tocarlo.
+   */
+  closeLabel?: string;
   /** Click afuera del panel cierra. Default `true`. */
   dismissOnOverlay?: boolean;
   /** Operación en curso: ni la X, ni el overlay, ni Escape cierran. */
@@ -217,6 +223,7 @@ export function Modal({
   size = 'md',
   maxWidth,
   showClose = true,
+  closeLabel = 'Cerrar',
   dismissOnOverlay = true,
   disableClose = false,
   ariaLabel,
@@ -327,7 +334,7 @@ export function Modal({
         onKeyDown={manejarTab}
       >
         {showClose ? (
-          <Cerrar type="button" onClick={onClose} disabled={disableClose} aria-label="Cerrar">
+          <Cerrar type="button" onClick={onClose} disabled={disableClose} aria-label={closeLabel}>
             ×
           </Cerrar>
         ) : null}
