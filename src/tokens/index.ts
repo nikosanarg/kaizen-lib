@@ -57,6 +57,9 @@ export const hairline = {
 /** Anillo de foco. Elemento no textual: el mínimo de contraste es 3:1. */
 export const ring = 'var(--kz-ring)';
 
+/** Velo detrás del panel de un `Modal`. Va fijo, no cambia con el tema. */
+export const scrim = 'var(--kz-scrim)';
+
 /**
  * Acento de marca. `soft` es el fondo lavado de chips y estados
  * seleccionados; encima de `soft` va el acento mismo, no `fg`.

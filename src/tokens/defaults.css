@@ -139,6 +139,13 @@
      encendido). Lo que necesite otra es una animación, no una transición. */
   --kz-duration-fast: 120ms;
   --kz-ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ---- Velo ---------------------------------------------------------------
+     Fondo del overlay de un `Modal`. Negro semitransparente en los dos temas
+     a propósito: no es una superficie de la escala (no tiene texto encima
+     directo, va detrás del panel) y un velo claro en tema claro no separa el
+     panel del contenido que tapa. */
+  --kz-scrim: rgba(0, 0, 0, 0.5);
 }
 
 /*

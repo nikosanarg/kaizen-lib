@@ -7,3 +7,5 @@ export { ReactionButton } from './ReactionButton';
 export type { ReactionTone } from './ReactionButton';
 export { LangSelector } from './LangSelector';
 export type { OpcionDeIdioma } from './LangSelector';
+export { Modal } from './Modal';
+export type { ModalSize } from './Modal';

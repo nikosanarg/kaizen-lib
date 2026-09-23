@@ -12,7 +12,7 @@ styled-components con `moduleResolution: "bundler"`, así que lo transpilan ello
 |---|---|---|
 | `kaizen-lib/tokens` | Referencias `var(--kz-*)` tipadas | listo |
 | `kaizen-lib/tokens.css` | Valores por defecto, tema oscuro y claro | listo |
-| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`) | en curso |
+| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`) | en curso |
 
 ## ¿Qué uso para qué?
 
@@ -28,6 +28,7 @@ alcanza, extendé el componente en vez de bypassearlo (ver `implement.md` del ha
 | Un ícono que cambia de color al reaccionar (me gusta, guardar, favorito) — **sin** fondo teñido | `ReactionButton` | `IconButton` con `active` |
 | El relieve neumórfico (círculo con sombra, sin relleno) alrededor de un `IconButton` | `Relieve` envolviendo el `IconButton` | una prop de `IconButton` — ver por qué en su docblock |
 | Un ciclador de idioma con banderas en la topbar | `LangSelector` | reconstruir el ciclado a mano — ya lo resuelve, con `Relieve` incluido |
+| Un panel flotante que bloquea el resto de la página hasta que se resuelve (formulario, confirmación, contenido a pantalla completa) | `Modal` | un overlay propio — portal, foco atrapado, `Escape`, scroll bloqueado y anidamiento ya están resueltos ahí |
 | Un arco/medidor que muestra cuánto de un total está ocupado | `Medidor` | un `<progress>` o una barra propia |
 | Espaciado, radios, color, tipografía, sombra | `kaizen-lib/tokens` (`space`, `radius`, `fg`, `accent`, `font`, `shadow`, `relief`...) | un valor a mano — cada uno es una referencia `var(--kz-*)` |
 
@@ -216,6 +217,36 @@ difieren: uno anuncia el destino, "Cambiar idioma a English"; otro el estado, "I
 English. Cambiar idioma"). `onChange` recibe el código de la opción siguiente; qué hacer
 con eso (`i18n.changeLanguage`, `next-intl`, lo que sea) es del producto — la librería no
 sabe qué mecanismo de traducción hay atrás.
+
+```tsx
+import { Modal } from 'kaizen-lib/ui';
+
+<Modal
+  open={abierto}
+  onClose={cerrar}
+  title="Eliminar cepa"
+  description="Esta acción no se puede deshacer."
+  footer={<Acciones><Boton onClick={cerrar}>Cancelar</Boton><Boton onClick={eliminar}>Eliminar</Boton></Acciones>}
+>
+  <p>Se van a borrar también sus lotes asociados.</p>
+</Modal>
+```
+
+**`Modal`** es el shell único de un panel flotante: portalea a `document.body`, atrapa el
+foco y lo devuelve a quien lo abrió al cerrar, cierra con `Escape`/click afuera/la X, y
+bloquea el scroll del fondo. Lleva una pila interna para el anidamiento real (un modal de
+confirmación abierto encima de un formulario): sólo el de más arriba atiende `Escape`, y el
+scroll se libera recién cuando se cierra el último.
+
+Sin `title` no hay nombre accesible propio — pasá `ariaLabel`. `size` (`sm`|`md`|`lg`|`xl`)
+fija el ancho máximo del panel; `maxWidth` lo pisa con un valor explícito. `disableClose`
+bloquea la X, el overlay y `Escape` a la vez — para una operación en curso, no para "no
+quiero que cierre nunca". `dismissOnOverlay={false}` sólo desactiva el click afuera, para
+un formulario a medio llenar que sigue queriendo cerrar con la X o `Escape`.
+
+Lo que **no** trae: un `placement` lateral (drawer) y un padding compacto de cuerpo son
+casos de un solo consumidor cada uno (`components/ui/Dialog` de valle-verde) — se resuelven
+ahí con un wrapper local hasta que un segundo consumidor los pida acá.
 
 ## Desarrollo
 
