@@ -1,6 +1,6 @@
 {
   "name": "kaizen-lib",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Tokens y componentes compartidos entre los fronts de Kaizen.",
   "license": "MIT",
   "author": "Nicolás Sandobal",

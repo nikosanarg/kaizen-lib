@@ -12,7 +12,7 @@ styled-components con `moduleResolution: "bundler"`, así que lo transpilan ello
 |---|---|---|
 | `kaizen-lib/tokens` | Referencias `var(--kz-*)` tipadas | listo |
 | `kaizen-lib/tokens.css` | Valores por defecto, tema oscuro y claro | listo |
-| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`) | en curso |
+| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Badge`) | en curso |
 
 ## ¿Qué uso para qué?
 
@@ -30,6 +30,7 @@ alcanza, extendé el componente en vez de bypassearlo (ver `implement.md` del ha
 | Un ciclador de idioma con banderas en la topbar | `LangSelector` | reconstruir el ciclado a mano — ya lo resuelve, con `Relieve` incluido |
 | Un panel flotante que bloquea el resto de la página hasta que se resuelve (formulario, confirmación, contenido a pantalla completa) | `Modal` | un overlay propio — portal, foco atrapado, `Escape`, scroll bloqueado y anidamiento ya están resueltos ahí |
 | Un arco/medidor que muestra cuánto de un total está ocupado | `Medidor` | un `<progress>` o una barra propia |
+| Una píldora de estado (activo, vencido, un rol, una etiqueta) con fondo lavado y texto del mismo tono | `Badge` | un `styled.span` propio por producto — es exactamente lo que ya había triplicado |
 | Espaciado, radios, color, tipografía, sombra | `kaizen-lib/tokens` (`space`, `radius`, `fg`, `accent`, `font`, `shadow`, `relief`...) | un valor a mano — cada uno es una referencia `var(--kz-*)` |
 
 Ningún componente trae íconos ni banderas: los recibe como `children`/`icono`, y el
@@ -249,6 +250,20 @@ un formulario a medio llenar que sigue queriendo cerrar con la X o `Escape`. `cl
 Lo que **no** trae: un `placement` lateral (drawer) y un padding compacto de cuerpo son
 casos de un solo consumidor cada uno (`components/ui/Dialog` de valle-verde) — se resuelven
 ahí con un wrapper local hasta que un segundo consumidor los pida acá.
+
+```tsx
+import { Badge } from 'kaizen-lib/ui';
+
+<Badge tone="success">Activo</Badge>
+<Badge tone="danger" bordered>Vencido</Badge>
+```
+
+**`Badge`** es una píldora de estado: fondo lavado + texto del mismo tono (`neutral` |
+`accent` | `success` | `danger` | `warning` | `info`, default `neutral`), mayúsculas
+apretadas. Elicitado de tres implementaciones ya duplicadas (taboo-next, valle-verde,
+kaizen-next) — el look es el de valle-verde. `bordered` agrega un borde de 1px del color
+pleno del tono, para cuando el fondo lavado solo no alcanza de contraste contra la
+superficie de atrás; no es una segunda estética, es el mismo tono con más peso.
 
 ## Desarrollo
 

@@ -9,3 +9,5 @@ export { LangSelector } from './LangSelector';
 export type { OpcionDeIdioma } from './LangSelector';
 export { Modal } from './Modal';
 export type { ModalSize } from './Modal';
+export { Badge } from './Badge';
+export type { BadgeTone } from './Badge';
