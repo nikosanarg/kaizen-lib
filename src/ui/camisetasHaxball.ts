@@ -7,10 +7,16 @@
  *
  * Dos cosas del original que NO se trajeron:
  * - El 4to valor numérico de cada entrada (`[angulo, colorTexto, colores, N,
- *   nombreNarrativo]`). Sólo lo usa el propio código para nada: el único
- *   consumo real es `room.setTeamColors(equipo, shirt[0], shirt[1],
- *   shirt[2])`, que ni siquiera lee ese 4to valor. No se sabe qué representaba
- *   y no se inventa un significado acá.
+ *   nombreNarrativo]`). El propósito es real —agrupar camisetas parecidas
+ *   para que la rotación automática de kaizen-bot no le toque a un equipo el
+ *   mismo color de familia que el rival (Brasil vs. Villarreal, amarillo
+ *   contra amarillo)—, pero en el código de hoy ese propósito lo cumple otra
+ *   cosa: `homeostatic_changeRedShirt` decide el choque con
+ *   `host_shirtDistance`, una distancia de color calculada de verdad sobre
+ *   `colorTexto` + `colores` (`base.js`), no con este número — no encontré
+ *   ningún lugar del repo que lea el índice `[3]`. Como acá no hay rotación
+ *   automática ni riesgo de choque (es un selector fijo, no equipos
+ *   enfrentados en vivo), no hace falta portarlo.
  * - El texto narrativo de chat (`" booocaaa"`, `"l equipo con camiseta
  *   oscura"`): está pensado para completar una frase ("cambiaste tu camiseta
  *   a la de..."), no para ser un nombre de exhibición. `nombre` es un rótulo
