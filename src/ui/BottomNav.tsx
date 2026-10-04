@@ -80,7 +80,9 @@ const Barra = styled.nav<{ $maxWidth: number }>`
   background: color-mix(in srgb, ${surface[1]} 88%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid ${hairline.DEFAULT};
+  /* Sombra interna y no border-top: el borde le sumaba 1px al alto y la
+     barra tapaba 1px de lo que el offset dejaba libre. */
+  box-shadow: inset 0 1px 0 ${hairline.DEFAULT};
   padding: 0 env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
 
   @media (max-width: ${({ $maxWidth }) => $maxWidth}px) {
