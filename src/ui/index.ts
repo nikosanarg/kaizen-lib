@@ -11,5 +11,7 @@ export { Modal } from './Modal';
 export type { ModalSize } from './Modal';
 export { Badge } from './Badge';
 export type { BadgeTone } from './Badge';
+export { BottomNav, bottomNavOffset } from './BottomNav';
+export type { BottomNavItem } from './BottomNav';
 export { DiscoHaxball, CAMISETAS_HAXBALL } from './DiscoHaxball';
 export type { CamisetaHaxball, NombreCamiseta } from './DiscoHaxball';

@@ -12,7 +12,7 @@ styled-components con `moduleResolution: "bundler"`, así que lo transpilan ello
 |---|---|---|
 | `kaizen-lib/tokens` | Referencias `var(--kz-*)` tipadas | listo |
 | `kaizen-lib/tokens.css` | Valores por defecto, tema oscuro y claro | listo |
-| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Badge`, `DiscoHaxball`) | en curso |
+| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Badge`, `BottomNav`, `DiscoHaxball`) | en curso |
 
 ## ¿Qué uso para qué?
 
@@ -31,6 +31,7 @@ alcanza, extendé el componente en vez de bypassearlo (ver `implement.md` del ha
 | Un panel flotante que bloquea el resto de la página hasta que se resuelve (formulario, confirmación, contenido a pantalla completa) | `Modal` | un overlay propio — portal, foco atrapado, `Escape`, scroll bloqueado y anidamiento ya están resueltos ahí |
 | Un arco/medidor que muestra cuánto de un total está ocupado | `Medidor` | un `<progress>` o una barra propia |
 | Una píldora de estado (activo, vencido, un rol, una etiqueta) con fondo lavado y texto del mismo tono | `Badge` | un `styled.span` propio por producto — es exactamente lo que ya había triplicado |
+| La navegación principal fija abajo en el teléfono (ícono + rótulo por destino) | `BottomNav`, y `bottomNavOffset` de padding inferior en lo que no debe quedar tapado | una barra propia — ya estaba cuadruplicada |
 | Espaciado, radios, color, tipografía, sombra | `kaizen-lib/tokens` (`space`, `radius`, `fg`, `accent`, `font`, `shadow`, `relief`...) | un valor a mano — cada uno es una referencia `var(--kz-*)` |
 | Mostrar la ficha/disco de Haxball de un equipo (para elegir un equipo representativo, o para lucir el catálogo de camisetas) | `DiscoHaxball` + `CAMISETAS_HAXBALL` | una imagen propia — es una aproximación visual generada por SVG, no requiere ningún asset |
 
@@ -265,6 +266,36 @@ apretadas. Elicitado de tres implementaciones ya duplicadas (taboo-next, valle-v
 kaizen-next) — el look es el de valle-verde. `bordered` agrega un borde de 1px del color
 pleno del tono, para cuando el fondo lavado solo no alcanza de contraste contra la
 superficie de atrás; no es una segunda estética, es el mismo tono con más peso.
+
+```tsx
+import Link from 'next/link';
+import { BottomNav, bottomNavOffset } from 'kaizen-lib/ui';
+
+<BottomNav
+  items={[{ id: 'inicio', label: 'Inicio', icon: <IoHomeOutline />, href: '/' }, ...]}
+  activeId={activo}
+  maxWidth={640}
+  ariaLabel="Secciones"
+  linkAs={Link}
+/>
+
+const Contenido = styled.main`padding-bottom: ${bottomNavOffset};`;
+```
+
+**`BottomNav`** es la barra de navegación fija abajo del teléfono: ícono + rótulo por
+destino, el activo con color de acento y una franja arriba (no sólo color). Elicitada de
+cuatro barras ya duplicadas (mixbol, valle-verde, tuxon, platenzen). Existe hasta
+`maxWidth` px y arriba se apaga por CSS, sin desmontarse, para no parpadear al hidratar.
+
+Qué decide el producto: `activeId` (si un destino matchea exacto o por prefijo es regla de
+sus rutas), `linkAs` (su router; sin él, `<a>`), y `ariaLabel` (su idioma, sin default).
+`onSelect(item, event)` se llama antes de navegar; con `event.preventDefault()` el
+destino hace otra cosa sin dejar de ser un link.
+
+Mientras se ve, publica `--kz-bottom-nav-offset` (su alto más el inset inferior del
+dispositivo). La barra es fija, así que el contenido lleva `bottomNavOffset` de padding
+inferior y lo que flota (FAB, avisos) lo suma a su `bottom`; donde la barra no está, vale
+`0px`.
 
 ## Desarrollo
 
