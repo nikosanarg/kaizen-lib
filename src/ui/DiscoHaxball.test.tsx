@@ -32,6 +32,12 @@ describe('DiscoHaxball — por clave del catálogo', () => {
     expect(colores).toEqual(CAMISETAS_HAXBALL.boca.colores);
   });
 
+  it('las franjas reparten el disco en partes iguales sin repetirse: 3 colores son 3 franjas, no 6', () => {
+    render(<DiscoHaxball camiseta="boca" />);
+    expect(patron().getAttribute('width')).toBe('100');
+    expect(rectangulos().map((r) => Number(r.getAttribute('width')))).toEqual([100 / 3, 100 / 3, 100 / 3]);
+  });
+
   it('un solo color no rompe: una franja, mismo color que "colores[0]"', () => {
     render(<DiscoHaxball camiseta="negro" />);
     expect(rectangulos()).toHaveLength(1);

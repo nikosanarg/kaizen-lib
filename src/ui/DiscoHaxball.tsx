@@ -15,8 +15,8 @@ type Props = {
   className?: string;
 };
 
-/** Ancho de cada franja, en unidades del `viewBox` (0 a 100). No sale de ningún dato de Haxball: es la aproximación que arma un patrón legible sobre un disco de ese tamaño. */
-const GROSOR_FRANJA = 16;
+/** Ancho del `viewBox`: un solo ciclo de colores cubre el disco de punta a punta, como en Haxball — 3 colores son 3 franjas, nunca un patrón que se repite. */
+const ANCHO_DISCO = 100;
 
 /** Alto de sobra del patrón para que, rotado a cualquier ángulo, siga cubriendo el círculo entero (diagonal de un cuadrado de 100 ≈ 141). */
 const ALTO_PATRON = 200;
@@ -40,7 +40,7 @@ const Svg = styled.svg`
  * **Es una aproximación, no un renderer pixel-perfect.** No hay documentación
  * pública del algoritmo exacto de Haxball (grosor real de franja, radio real
  * del disco): esto reproduce el modelo general —franjas paralelas rotadas por
- * `angulo`, cicladas por `colores`— calibrado a ojo. Si en algún momento hace
+ * `angulo`, una por color y de igual ancho, repartidas sobre el disco— calibrado a ojo. Si en algún momento hace
  * falta fidelidad exacta, hay que calibrarlo contra capturas del juego real,
  * no contra esta implementación.
  *
@@ -52,10 +52,11 @@ const Svg = styled.svg`
 export function DiscoHaxball({ camiseta, size = 64, className }: Props) {
   const { angulo, colores, nombre } = resolverCamiseta(camiseta);
   const patternId = `disco-haxball-${useId()}`;
+  const grosorFranja = ANCHO_DISCO / colores.length;
 
   return (
     <Svg
-      viewBox="0 0 100 100"
+      viewBox={`0 0 ${ANCHO_DISCO} ${ANCHO_DISCO}`}
       width={size}
       height={size}
       role="img"
@@ -66,12 +67,12 @@ export function DiscoHaxball({ camiseta, size = 64, className }: Props) {
         <pattern
           id={patternId}
           patternUnits="userSpaceOnUse"
-          width={GROSOR_FRANJA * colores.length}
+          width={ANCHO_DISCO}
           height={ALTO_PATRON}
           patternTransform={`rotate(${angulo} 50 50)`}
         >
           {colores.map((color, indice) => (
-            <rect key={indice} x={indice * GROSOR_FRANJA} y={0} width={GROSOR_FRANJA} height={ALTO_PATRON} fill={color} />
+            <rect key={indice} x={indice * grosorFranja} y={0} width={grosorFranja} height={ALTO_PATRON} fill={color} />
           ))}
         </pattern>
       </defs>
