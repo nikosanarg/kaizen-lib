@@ -65,6 +65,31 @@ describe('DiscoHaxball — camiseta suelta (fuera del catálogo)', () => {
   });
 });
 
+describe('DiscoHaxball — texto sobre el disco', () => {
+  const texto = () => document.querySelector('text');
+
+  it('sin texto no dibuja nada encima de las franjas', () => {
+    render(<DiscoHaxball camiseta="boca" />);
+    expect(texto()).toBeNull();
+  });
+
+  it('dibuja el texto en el colorTexto de la camiseta', () => {
+    render(<DiscoHaxball camiseta="river" texto="HC" />);
+    expect(texto()!.textContent).toBe('HC');
+    expect(texto()!.getAttribute('fill')).toBe(CAMISETAS_HAXBALL.river.colorTexto);
+  });
+
+  it('corta a 2 caracteres, como en Haxball', () => {
+    render(<DiscoHaxball camiseta="river" texto="ABC" />);
+    expect(texto()!.textContent).toBe('AB');
+  });
+
+  it('un emoji ocupa los 2 lugares: lo que sigue no entra', () => {
+    render(<DiscoHaxball camiseta="river" texto="⚽A" />);
+    expect(texto()!.textContent).toBe('⚽');
+  });
+});
+
 describe('DiscoHaxball — tamaño y className', () => {
   it('size por defecto es 64', () => {
     render(<DiscoHaxball camiseta="negro" />);

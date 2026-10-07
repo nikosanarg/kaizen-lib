@@ -28,7 +28,7 @@ export interface CamisetaHaxball {
   nombre: string;
   /** Ángulo de las franjas, en grados — el mismo valor que recibe `room.setTeamColors`. */
   angulo: number;
-  /** Color del número de jugador sobre el disco, en Haxball. `DiscoHaxball` no lo dibuja hoy (no hay número que mostrar fuera de una partida). */
+  /** Color del avatar del jugador (hasta 2 caracteres) sobre el disco, en Haxball. `DiscoHaxball` lo usa para su `texto`. */
   colorTexto: string;
   /** 1 a 3 colores que arman las franjas, en el orden en que se ciclan. */
   colores: string[];

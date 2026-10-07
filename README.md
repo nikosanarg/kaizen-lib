@@ -33,7 +33,7 @@ alcanza, extendé el componente en vez de bypassearlo (ver `implement.md` del ha
 | Una píldora de estado (activo, vencido, un rol, una etiqueta) con fondo lavado y texto del mismo tono | `Badge` | un `styled.span` propio por producto — es exactamente lo que ya había triplicado |
 | La navegación principal fija abajo en el teléfono (ícono + rótulo por destino) | `BottomNav`, y `bottomNavOffset` de padding inferior en lo que no debe quedar tapado | una barra propia — ya estaba cuadruplicada |
 | Espaciado, radios, color, tipografía, sombra | `kaizen-lib/tokens` (`space`, `radius`, `fg`, `accent`, `font`, `shadow`, `relief`...) | un valor a mano — cada uno es una referencia `var(--kz-*)` |
-| Mostrar la ficha/disco de Haxball de un equipo (para elegir un equipo representativo, o para lucir el catálogo de camisetas) | `DiscoHaxball` + `CAMISETAS_HAXBALL` | una imagen propia — es una aproximación visual generada por SVG, no requiere ningún asset |
+| Mostrar la ficha/disco de Haxball de un equipo (para elegir un equipo representativo, o para lucir el catálogo de camisetas) | `DiscoHaxball` + `CAMISETAS_HAXBALL`; el avatar (`texto`) se valida al guardarlo con `recortarAvatarHaxball` | una imagen propia — es una aproximación visual generada por SVG, no requiere ningún asset |
 
 Ningún componente trae íconos ni banderas: los recibe como `children`/`icono`, y el
 producto elige de dónde salen (`react-icons`, `react-country-flag`, SVG propio).
