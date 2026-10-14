@@ -15,3 +15,5 @@ export { BottomNav, bottomNavOffset } from './BottomNav';
 export type { BottomNavItem } from './BottomNav';
 export { DiscoHaxball, CAMISETAS_HAXBALL, recortarAvatarHaxball, LUGARES_AVATAR_HAXBALL } from './DiscoHaxball';
 export type { CamisetaHaxball, NombreCamiseta } from './DiscoHaxball';
+export { PanelExpandible } from './PanelExpandible';
+export type { PanelExpandibleProps } from './PanelExpandible';

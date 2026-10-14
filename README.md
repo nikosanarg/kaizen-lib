@@ -12,7 +12,7 @@ styled-components con `moduleResolution: "bundler"`, así que lo transpilan ello
 |---|---|---|
 | `kaizen-lib/tokens` | Referencias `var(--kz-*)` tipadas | listo |
 | `kaizen-lib/tokens.css` | Valores por defecto, tema oscuro y claro | listo |
-| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Badge`, `BottomNav`, `DiscoHaxball`) | en curso |
+| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Badge`, `BottomNav`, `PanelExpandible`, `DiscoHaxball`) | en curso |
 
 ## ¿Qué uso para qué?
 
@@ -32,6 +32,7 @@ alcanza, extendé el componente en vez de bypassearlo (ver `implement.md` del ha
 | Un arco/medidor que muestra cuánto de un total está ocupado | `Medidor` | un `<progress>` o una barra propia |
 | Una píldora de estado (activo, vencido, un rol, una etiqueta) con fondo lavado y texto del mismo tono | `Badge` | un `styled.span` propio por producto — es exactamente lo que ya había triplicado |
 | La navegación principal fija abajo en el teléfono (ícono + rótulo por destino) | `BottomNav`, y `bottomNavOffset` de padding inferior en lo que no debe quedar tapado | una barra propia — ya estaba cuadruplicada |
+| Un panel de pantalla con título, un número que resume el contenido y un cuerpo que se pliega (sin desmontarse) | `PanelExpandible` | un `<details>` o un acordeón propio — el indicador queda a la vista con el panel cerrado, que es lo que justifica plegarlo |
 | Espaciado, radios, color, tipografía, sombra | `kaizen-lib/tokens` (`space`, `radius`, `fg`, `accent`, `font`, `shadow`, `relief`...) | un valor a mano — cada uno es una referencia `var(--kz-*)` |
 | Mostrar la ficha/disco de Haxball de un equipo (para elegir un equipo representativo, o para lucir el catálogo de camisetas) | `DiscoHaxball` + `CAMISETAS_HAXBALL`; el avatar (`texto`) se valida al guardarlo con `recortarAvatarHaxball` | una imagen propia — es una aproximación visual generada por SVG, no requiere ningún asset |
 
@@ -296,6 +297,24 @@ Mientras se ve, publica `--kz-bottom-nav-offset` (su alto más el inset inferior
 dispositivo). La barra es fija, así que el contenido lleva `bottomNavOffset` de padding
 inferior y lo que flota (FAB, avisos) lo suma a su `bottom`; donde la barra no está, vale
 `0px`.
+
+```tsx
+import { PanelExpandible } from 'kaizen-lib/ui';
+
+<PanelExpandible titulo="Comprometido" indicador="30 g" leyenda="faltan entregar">
+  <Tabla />
+</PanelExpandible>
+```
+
+**`PanelExpandible`** es un panel de pantalla: cabecera con el título y un indicador
+(`indicador` + `leyenda`, o varios con `indicadores`), y un cuerpo que se pliega. Plegado
+**no desmonta**: el contenido conserva filtros y selección. El control accesible es el
+chevron (`aria-expanded`); toda la cabecera responde al click. Controlado (`abierto` +
+`onCambiar`) o no (`abiertoInicial`). Con `plegable={false}` conserva el formato sin
+chevron, para una pantalla de un solo panel. `duracionMs` (default 300) fija la animación
+y el momento en que el cuerpo se oculta. `etiquetaPlegar`/`etiquetaDesplegar` traducen el
+nombre del chevron. La columna del plegable es `minmax(0, 1fr)`: una tabla ancha adentro
+se compacta o scrollea, no empuja el panel fuera de la pantalla.
 
 ## Desarrollo
 
