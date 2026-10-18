@@ -17,3 +17,5 @@ export { DiscoHaxball, CAMISETAS_HAXBALL, recortarAvatarHaxball, LUGARES_AVATAR_
 export type { CamisetaHaxball, NombreCamiseta } from './DiscoHaxball';
 export { PanelExpandible } from './PanelExpandible';
 export type { PanelExpandibleProps } from './PanelExpandible';
+export { Stepper } from './Stepper';
+export type { PasoStepper, StepperProps } from './Stepper';
