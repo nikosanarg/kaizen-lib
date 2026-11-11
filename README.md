@@ -12,7 +12,7 @@ styled-components con `moduleResolution: "bundler"`, así que lo transpilan ello
 |---|---|---|
 | `kaizen-lib/tokens` | Referencias `var(--kz-*)` tipadas | listo |
 | `kaizen-lib/tokens.css` | Valores por defecto, tema oscuro y claro | listo |
-| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Badge`, `BottomNav`, `PanelExpandible`, `Stepper`, `DiscoHaxball`) | en curso |
+| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Sheet`, `Drawer`, `Badge`, `BottomNav`, `PanelExpandible`, `Stepper`, `DiscoHaxball`) | en curso |
 
 ## ¿Qué uso para qué?
 
@@ -29,6 +29,8 @@ alcanza, extendé el componente en vez de bypassearlo (ver `implement.md` del ha
 | El relieve neumórfico (círculo con sombra, sin relleno) alrededor de un `IconButton` | `Relieve` envolviendo el `IconButton` | una prop de `IconButton` — ver por qué en su docblock |
 | Un ciclador de idioma con banderas en la topbar | `LangSelector` | reconstruir el ciclado a mano — ya lo resuelve, con `Relieve` incluido |
 | Un panel flotante que bloquea el resto de la página hasta que se resuelve (formulario, confirmación, contenido a pantalla completa) | `Modal` | un overlay propio — portal, foco atrapado, `Escape`, scroll bloqueado y anidamiento ya están resueltos ahí |
+| Un panel que sube desde abajo en el teléfono (elegir de una lista, formulario corto, acciones) | `Sheet` (alturas `auto`/`media`/`completa`); animado y con cierre por arrastre, `AnimatedSheet` de `kaizen-lib/motion` | un overlay propio con keyframes — es el `Modal` con `posicion="abajo"` |
+| Un panel lateral a toda la altura (ficha de detalle, filtros) | `Drawer` con `lado`; animado, `AnimatedDrawer` | un panel deslizante casero sin `role` ni foco atrapado |
 | Un arco/medidor que muestra cuánto de un total está ocupado | `Medidor` | un `<progress>` o una barra propia |
 | Una píldora de estado (activo, vencido, un rol, una etiqueta) con fondo lavado y texto del mismo tono | `Badge` | un `styled.span` propio por producto — es exactamente lo que ya había triplicado |
 | La navegación principal fija abajo en el teléfono (ícono + rótulo por destino) | `BottomNav`, y `bottomNavOffset` de padding inferior en lo que no debe quedar tapado | una barra propia — ya estaba cuadruplicada |
@@ -103,6 +105,12 @@ un caso puntual, `fade({ tiempos: { enter: 0.4 } })`.
 termine la salida. Foco, `Escape`, pila y `disableClose` son los de `Modal`. El
 `Modal` de `kaizen-lib/ui` sigue igual sin motion; la animación entra por su prop
 `animacion` (`ModalAnimacion`), que arma `AnimatedModal`.
+
+**`AnimatedSheet` y `AnimatedDrawer`.** Las props de `Sheet`/`Drawer`. El sheet entra
+desde abajo (`desdeBorde('bottom')`) y trae un tirador: arrastrarlo hacia abajo más de
+un cuarto del alto (tope 160px) o con un tirón rápido cierra (`cierraPorArrastre`).
+`arrastrable={false}` lo saca; con `disableClose` no cierra. El drawer entra por su
+costado (`desdeBorde('left' | 'right')`).
 
 ## Tokens
 
