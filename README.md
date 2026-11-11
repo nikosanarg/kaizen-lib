@@ -36,6 +36,10 @@ alcanza, extendé el componente en vez de bypassearlo (ver `implement.md` del ha
 | Los pasos de un recorrido (un formulario en etapas, un trámite), con el actual marcado | `Stepper`; la paleta se pisa con `--kz-stepper-*` (ver su docblock) | una barra de progreso propia — las líneas se llenan en orden y respeta `prefers-reduced-motion` |
 | Espaciado, radios, color, tipografía, sombra | `kaizen-lib/tokens` (`space`, `radius`, `fg`, `accent`, `font`, `shadow`, `relief`...) | un valor a mano — cada uno es una referencia `var(--kz-*)` |
 | Que algo entre y salga animado (un modal, un toast, un panel) | `kaizen-lib/motion`: `AnimatedModal`, o un preset (`fade`, `scale`, `slideUp`, `slideSide`) sobre `m.div` | importar `motion` directo o escribir duraciones a mano — los presets leen los tokens de entrada/salida |
+| El lugar de un dato que todavía no llegó (renglones, card, avatar) | `Skeleton` (`variant` `line`/`block`/`circle`, `lines`) | un bloque gris propio — ya anuncia la carga (`role="status"`, `aria-busy`) y respeta reduced motion |
+| Un número que cuenta hasta su valor (total, saldo, indicador) | `kaizen-lib/motion`: `AnimatedNumber` (`formato` de `Intl.NumberFormat`) | un contador con `requestAnimationFrame` — el lector lee sólo el valor final |
+| Que algo aparezca al entrar en pantalla, solo o escalonado | `kaizen-lib/motion`: `Reveal` (`preset`, `escalonado`) | un `IntersectionObserver` a mano |
+| Respuesta al apretar/pasar por encima de un botón o card | `kaizen-lib/motion`: `Pressable` (`as`, `tap`, `hover`) | un keyframe de `scale` propio |
 | Mostrar la ficha/disco de Haxball de un equipo (para elegir un equipo representativo, o para lucir el catálogo de camisetas) | `DiscoHaxball` + `CAMISETAS_HAXBALL`; el avatar (`texto`) se valida al guardarlo con `recortarAvatarHaxball` | una imagen propia — es una aproximación visual generada por SVG, no requiere ningún asset |
 
 Ningún componente trae íconos ni banderas: los recibe como `children`/`icono`, y el
