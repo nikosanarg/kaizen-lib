@@ -12,7 +12,7 @@ styled-components con `moduleResolution: "bundler"`, así que lo transpilan ello
 |---|---|---|
 | `kaizen-lib/tokens` | Referencias `var(--kz-*)` tipadas | listo |
 | `kaizen-lib/tokens.css` | Valores por defecto, tema oscuro y claro | listo |
-| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Badge`, `BottomNav`, `PanelExpandible`, `Stepper`, `DiscoHaxball`) | en curso |
+| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Badge`, `BottomNav`, `PanelExpandible`, `Stepper`, `DiscoHaxball`, `Tabs`) | en curso |
 
 ## ¿Qué uso para qué?
 
@@ -34,6 +34,7 @@ alcanza, extendé el componente en vez de bypassearlo (ver `implement.md` del ha
 | La navegación principal fija abajo en el teléfono (ícono + rótulo por destino) | `BottomNav`, y `bottomNavOffset` de padding inferior en lo que no debe quedar tapado | una barra propia — ya estaba cuadruplicada |
 | Un panel de pantalla con título, un número que resume el contenido y un cuerpo que se pliega (sin desmontarse) | `PanelExpandible` | un `<details>` o un acordeón propio — el indicador queda a la vista con el panel cerrado, que es lo que justifica plegarlo |
 | Los pasos de un recorrido (un formulario en etapas, un trámite), con el actual marcado | `Stepper`; la paleta se pisa con `--kz-stepper-*` (ver su docblock) | una barra de progreso propia — las líneas se llenan en orden y respeta `prefers-reduced-motion` |
+| Pestañas que cambian el contenido de una zona (subrayado o pastilla), con teclado y roles WAI-ARIA | `Tabs`; con indicador animado, `AnimatedTabs` de `kaizen-lib/motion` | una fila de botones propia — `aria-controls`, flechas, Home/End, roving tabindex y activación manual ya están |
 | Espaciado, radios, color, tipografía, sombra | `kaizen-lib/tokens` (`space`, `radius`, `fg`, `accent`, `font`, `shadow`, `relief`...) | un valor a mano — cada uno es una referencia `var(--kz-*)` |
 | Que algo entre y salga animado (un modal, un toast, un panel) | `kaizen-lib/motion`: `AnimatedModal`, o un preset (`fade`, `scale`, `slideUp`, `slideSide`) sobre `m.div` | importar `motion` directo o escribir duraciones a mano — los presets leen los tokens de entrada/salida |
 | Mostrar la ficha/disco de Haxball de un equipo (para elegir un equipo representativo, o para lucir el catálogo de camisetas) | `DiscoHaxball` + `CAMISETAS_HAXBALL`; el avatar (`texto`) se valida al guardarlo con `recortarAvatarHaxball` | una imagen propia — es una aproximación visual generada por SVG, no requiere ningún asset |
