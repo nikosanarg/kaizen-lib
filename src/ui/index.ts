@@ -20,3 +20,5 @@ export type { PanelExpandibleProps } from './PanelExpandible';
 export { Stepper } from './Stepper';
 export type { PasoStepper, StepperProps } from './Stepper';
 export type { ModalAnimacion, ModalProps } from './Modal';
+export { Tabs } from './Tabs';
+export type { TabItem, TabsProps, TabsVariante, TabsActivacion, TabsCaja, TabsIndicadorProps } from './Tabs';

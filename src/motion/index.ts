@@ -7,3 +7,5 @@ export { AnimatedModal } from './AnimatedModal';
 export type { AnimatedModalProps } from './AnimatedModal';
 /** Reexportados para que el consumidor no importe `motion` por su cuenta. */
 export { AnimatePresence, m } from 'motion/react';
+export { AnimatedTabs } from './AnimatedTabs';
+export type { AnimatedTabsProps } from './AnimatedTabs';
