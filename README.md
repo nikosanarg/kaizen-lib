@@ -125,6 +125,11 @@ termine la salida. Foco, `Escape`, pila y `disableClose` son los de `Modal`. El
 `bottom-center`) y la pila se reacomoda con `layout`; `domMax` se carga en diferido sólo
 ahí. `useToast()` es el mismo hook. Sin motion, `ToastProvider` de `kaizen-lib/ui` hace
 lo mismo sin animar (adaptador `ToastAnimacion`, como `ModalAnimacion`).
+Tonos: `info`, `success`, `warning` (`toast.warning('Tu sesión expiró')`, región polite)
+y `error` (región assertive). Para no tapar barras fijas, `offsetTop` y `offsetBottom`
+aceptan cualquier largo CSS (`offsetBottom="var(--bottom-nav-height)"`); se suman al
+margen de la pila. Default: `env(safe-area-inset-top|bottom, 0px)`; al pasarlos se
+reemplaza, así que si tu barra no incluye el safe-area, sumalo con `calc`.
 **`AnimatedSheet` y `AnimatedDrawer`.** Las props de `Sheet`/`Drawer`. El sheet entra
 desde abajo (`desdeBorde('bottom')`) y trae un tirador: arrastrarlo hacia abajo más de
 un cuarto del alto (tope 160px) o con un tirón rápido cierra (`cierraPorArrastre`).
@@ -144,7 +149,13 @@ import { Spotlight, Card3D, Beams, StarField, HeroText } from 'kaizen-lib/efecto
 <section style={{ position: 'relative' }}><Beams cantidad={6} />…</section>
 <StarField modo="fijo" color="#bb7fff" />
 <HeroText texto={t('hero.title')} por="palabra" />
+<HeroText texto={t('hero.title')} gradiente="linear-gradient(90deg, var(--a), var(--b))" />
 ```
+
+`HeroText` con texto en gradiente: no pongas `background-clip: text` en el padre (las
+piezas `inline-block` animadas lo rompen); pasá `gradiente`. Cada pieza pinta su tramo
+del gradiente del título entero, medido sin re-render y re-medido al cambiar de tamaño,
+así corre continuo y no se repite por palabra.
 
 | Efecto | Táctil (sin hover) | Reduced-motion | Fuera de pantalla / pestaña oculta | Peso (min / gzip) |
 |---|---|---|---|---|
