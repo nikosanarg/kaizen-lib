@@ -35,6 +35,7 @@ alcanza, extendé el componente en vez de bypassearlo (ver `implement.md` del ha
 | Un panel de pantalla con título, un número que resume el contenido y un cuerpo que se pliega (sin desmontarse) | `PanelExpandible` | un `<details>` o un acordeón propio — el indicador queda a la vista con el panel cerrado, que es lo que justifica plegarlo |
 | Los pasos de un recorrido (un formulario en etapas, un trámite), con el actual marcado | `Stepper`; la paleta se pisa con `--kz-stepper-*` (ver su docblock) | una barra de progreso propia — las líneas se llenan en orden y respeta `prefers-reduced-motion` |
 | Espaciado, radios, color, tipografía, sombra | `kaizen-lib/tokens` (`space`, `radius`, `fg`, `accent`, `font`, `shadow`, `relief`...) | un valor a mano — cada uno es una referencia `var(--kz-*)` |
+| Que algo entre y salga animado (un modal, un toast, un panel) | `kaizen-lib/motion`: `AnimatedModal`, o un preset (`fade`, `scale`, `slideUp`, `slideSide`) sobre `m.div` | importar `motion` directo o escribir duraciones a mano — los presets leen los tokens de entrada/salida |
 | Mostrar la ficha/disco de Haxball de un equipo (para elegir un equipo representativo, o para lucir el catálogo de camisetas) | `DiscoHaxball` + `CAMISETAS_HAXBALL`; el avatar (`texto`) se valida al guardarlo con `recortarAvatarHaxball` | una imagen propia — es una aproximación visual generada por SVG, no requiere ningún asset |
 
 Ningún componente trae íconos ni banderas: los recibe como `children`/`icono`, y el
@@ -55,6 +56,53 @@ En `next.config`:
 ```ts
 const nextConfig = { transpilePackages: ['kaizen-lib'] };
 ```
+
+## Movimiento (`kaizen-lib/motion`)
+
+Subpath opcional sobre [`motion`](https://motion.dev) v12. `motion` es
+**peerDependency opcional**: sólo la instala quien importa `kaizen-lib/motion`;
+`kaizen-lib/ui` y `kaizen-lib/tokens` no la necesitan.
+
+```bash
+npm install motion
+```
+
+Una vez, cerca de la raíz (en Next, en un layout `'use client'`):
+
+```tsx
+import { MotionProvider } from 'kaizen-lib/motion';
+
+<MotionProvider>{children}</MotionProvider>
+```
+
+Carga sólo `domAnimation` en modo `strict` (hay que usar `m.*`, no `motion.*`) y
+respeta `prefers-reduced-motion`: con la preferencia activa quedan los fades y se
+apagan los desplazamientos y escalas. Layout animation (`layout`, `layoutId`) necesita
+`domMax`: la pieza que la use la carga en diferido con su propio
+`<LazyMotion features={() => import('motion/react').then((m) => m.domMax)}>` (ver el
+docblock de `MotionProvider`).
+
+**Presets.** `fade()`, `scale()`, `slideUp()`, `slideSide('left' | 'right')`. Cada uno
+devuelve `{ initial, animate, exit }` para esparcir sobre un `m.*` dentro de
+`AnimatePresence`; ambos se reexportan desde el subpath:
+
+```tsx
+import { AnimatePresence, m, slideSide } from 'kaizen-lib/motion';
+
+<AnimatePresence>
+  {visible ? <m.div key="aviso" {...slideSide('right')}>Guardado</m.div> : null}
+</AnimatePresence>
+```
+
+Duraciones y curvas salen de `--kz-duration-enter`/`-exit` y `--kz-ease-enter`/`-exit`,
+leídas del CSS en ejecución: si el producto pisa el token, la animación lo sigue. Para
+un caso puntual, `fade({ tiempos: { enter: 0.4 } })`.
+
+**`AnimatedModal`.** Las mismas props que `Modal` más `entrada?: 'scale' | 'slideUp'`
+(default `scale`). Fondo en fade, panel según `entrada`, y el desmontaje espera a que
+termine la salida. Foco, `Escape`, pila y `disableClose` son los de `Modal`. El
+`Modal` de `kaizen-lib/ui` sigue igual sin motion; la animación entra por su prop
+`animacion` (`ModalAnimacion`), que arma `AnimatedModal`.
 
 ## Tokens
 
