@@ -34,3 +34,8 @@ export { Select } from './Select';
 export type { SelectOption, SelectProps } from './Select';
 export { Combobox } from './Combobox';
 export type { ComboboxProps } from './Combobox';
+export type { ModalPosicion } from './Modal';
+export { Sheet } from './Sheet';
+export type { SheetAltura, SheetProps } from './Sheet';
+export { Drawer } from './Drawer';
+export type { DrawerLado, DrawerProps } from './Drawer';
