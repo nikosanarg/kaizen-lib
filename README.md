@@ -12,8 +12,8 @@ styled-components con `moduleResolution: "bundler"`, así que lo transpilan ello
 |---|---|---|
 | `kaizen-lib/tokens` | Referencias `var(--kz-*)` tipadas | listo |
 | `kaizen-lib/tokens.css` | Valores por defecto, tema oscuro y claro | listo |
-| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Sheet`, `Drawer`, `Toast`, `Tabs`, `Tooltip`, `Popover`, `Menu`, `Select`, `Combobox`, `Badge`, `BottomNav`, `PanelExpandible`, `Stepper`, `DiscoHaxball`) | en curso |
-| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Badge`, `BottomNav`, `PanelExpandible`, `Stepper`, `DiscoHaxball`) | en curso |
+| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Sheet`, `Drawer`, `Toast`, `Tabs`, `Tooltip`, `Popover`, `Menu`, `Select`, `Combobox`, `Badge`, `BottomNav`, `PanelExpandible`, `Stepper`, `DiscoHaxball`, `Skeleton`) | en curso |
+| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Badge`, `BottomNav`, `PanelExpandible`, `Stepper`, `DiscoHaxball`, `Skeleton`) | en curso |
 | `kaizen-lib/efectos` | Efectos de landing: `Spotlight`, `Card3D`, `Beams`, `StarField`, `HeroText` | en curso |
 
 ## ¿Qué uso para qué?
