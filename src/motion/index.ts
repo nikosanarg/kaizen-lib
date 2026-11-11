@@ -7,3 +7,9 @@ export { AnimatedModal } from './AnimatedModal';
 export type { AnimatedModalProps } from './AnimatedModal';
 /** Reexportados para que el consumidor no importe `motion` por su cuenta. */
 export { AnimatePresence, m } from 'motion/react';
+export { AnimatedNumber } from './AnimatedNumber';
+export type { AnimatedNumberProps } from './AnimatedNumber';
+export { Reveal } from './Reveal';
+export type { RevealProps } from './Reveal';
+export { Pressable } from './Pressable';
+export type { PressableProps } from './Pressable';
