@@ -13,6 +13,7 @@ styled-components con `moduleResolution: "bundler"`, así que lo transpilan ello
 | `kaizen-lib/tokens` | Referencias `var(--kz-*)` tipadas | listo |
 | `kaizen-lib/tokens.css` | Valores por defecto, tema oscuro y claro | listo |
 | `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Badge`, `BottomNav`, `PanelExpandible`, `Stepper`, `DiscoHaxball`) | en curso |
+| `kaizen-lib/efectos` | Efectos de landing: `Spotlight`, `Card3D`, `Beams`, `StarField`, `HeroText` | en curso |
 
 ## ¿Qué uso para qué?
 
@@ -36,6 +37,7 @@ alcanza, extendé el componente en vez de bypassearlo (ver `implement.md` del ha
 | Los pasos de un recorrido (un formulario en etapas, un trámite), con el actual marcado | `Stepper`; la paleta se pisa con `--kz-stepper-*` (ver su docblock) | una barra de progreso propia — las líneas se llenan en orden y respeta `prefers-reduced-motion` |
 | Espaciado, radios, color, tipografía, sombra | `kaizen-lib/tokens` (`space`, `radius`, `fg`, `accent`, `font`, `shadow`, `relief`...) | un valor a mano — cada uno es una referencia `var(--kz-*)` |
 | Que algo entre y salga animado (un modal, un toast, un panel) | `kaizen-lib/motion`: `AnimatedModal`, o un preset (`fade`, `scale`, `slideUp`, `slideSide`) sobre `m.div` | importar `motion` directo o escribir duraciones a mano — los presets leen los tokens de entrada/salida |
+| Un efecto de landing (halo que sigue al mouse, card que se inclina, fondo de haces o de estrellas, título que aparece por palabras) | `kaizen-lib/efectos` | copiar efectos de Aceternity o el `StarField` de taboo/nsandev — los de acá se pausan fuera de pantalla, degradan en táctil y respetan reduced-motion |
 | Mostrar la ficha/disco de Haxball de un equipo (para elegir un equipo representativo, o para lucir el catálogo de camisetas) | `DiscoHaxball` + `CAMISETAS_HAXBALL`; el avatar (`texto`) se valida al guardarlo con `recortarAvatarHaxball` | una imagen propia — es una aproximación visual generada por SVG, no requiere ningún asset |
 
 Ningún componente trae íconos ni banderas: los recibe como `children`/`icono`, y el
@@ -103,6 +105,37 @@ un caso puntual, `fade({ tiempos: { enter: 0.4 } })`.
 termine la salida. Foco, `Escape`, pila y `disableClose` son los de `Modal`. El
 `Modal` de `kaizen-lib/ui` sigue igual sin motion; la animación entra por su prop
 `animacion` (`ModalAnimacion`), que arma `AnimatedModal`.
+
+## Efectos de landing (`kaizen-lib/efectos`)
+
+Subpath propio para que su peso no caiga en `ui` ni en `motion`. **No necesita `motion`**
+ni `MotionProvider`: todo es CSS (transform, gradientes, SVG) y unas pocas líneas de JS
+que escriben variables CSS sin re-render.
+
+```tsx
+import { Spotlight, Card3D, Beams, StarField, HeroText } from 'kaizen-lib/efectos';
+
+<Spotlight style={{ borderRadius: 16 }}>…sección…</Spotlight>
+<Card3D brillo max={6}>…card…</Card3D>
+<section style={{ position: 'relative' }}><Beams cantidad={6} />…</section>
+<StarField modo="fijo" color="#bb7fff" />
+<HeroText texto={t('hero.title')} por="palabra" />
+```
+
+| Efecto | Táctil (sin hover) | Reduced-motion | Fuera de pantalla / pestaña oculta | Peso (min / gzip) |
+|---|---|---|---|---|
+| `Spotlight` | halo quieto en `reposo` (o apagado con `reposo={null}`) | igual que táctil | sin trabajo: sólo reacciona a `pointermove`, una escritura por frame | 2.2 KB / 1.1 KB |
+| `Card3D` | plana, sin listeners | plana, sin brillo | sin trabajo | 2.7 KB / 1.2 KB |
+| `Beams` | igual | sólo las guías, sin pulso | animación CSS en pausa | 2.4 KB / 1.2 KB |
+| `StarField` | igual | estrellas quietas | animación CSS en pausa | 2.4 KB / 1.2 KB |
+| `HeroText` | igual | texto final, sin animar | anima una vez, al entrar en pantalla | 2.2 KB / 1.1 KB |
+
+Pesos medidos con rolldown (minificado, `react` y `styled-components` externos); cada
+fila incluye el helper compartido. El subpath entero: 10.3 KB / 3.7 KB.
+
+`StarField` reemplaza al componente copiado en taboo y nsandev: misma distribución
+gaussiana, pero en un solo SVG con tres grupos que titilan (no una animación por
+estrella) y posiciones por `semilla`, sin render vacío antes de montar.
 
 ## Tokens
 
