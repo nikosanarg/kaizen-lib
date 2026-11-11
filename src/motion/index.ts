@@ -9,3 +9,5 @@ export type { AnimatedModalProps } from './AnimatedModal';
 export { AnimatePresence, m } from 'motion/react';
 export { AnimatedToastProvider } from './AnimatedToastProvider';
 export type { AnimatedToastProviderProps } from './AnimatedToastProvider';
+export { AnimatedTabs } from './AnimatedTabs';
+export type { AnimatedTabsProps } from './AnimatedTabs';

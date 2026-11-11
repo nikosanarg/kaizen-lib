@@ -22,3 +22,5 @@ export type { PasoStepper, StepperProps } from './Stepper';
 export type { ModalAnimacion, ModalProps } from './Modal';
 export { ToastProvider, useToast } from './Toast';
 export type { ToastAccion, ToastAnimacion, ToastApi, ToastOpciones, ToastPosicion, ToastProviderProps, ToastTone } from './Toast';
+export { Tabs } from './Tabs';
+export type { TabItem, TabsProps, TabsVariante, TabsActivacion, TabsCaja, TabsIndicadorProps } from './Tabs';
