@@ -22,6 +22,7 @@
     "./tokens.css": "./src/tokens/defaults.css",
     "./ui": "./src/ui/index.ts",
     "./motion": "./src/motion/index.ts",
+    "./efectos": "./src/efectos/index.ts",
     "./package.json": "./package.json"
   },
   "scripts": {

@@ -13,6 +13,8 @@ styled-components con `moduleResolution: "bundler"`, así que lo transpilan ello
 | `kaizen-lib/tokens` | Referencias `var(--kz-*)` tipadas | listo |
 | `kaizen-lib/tokens.css` | Valores por defecto, tema oscuro y claro | listo |
 | `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Sheet`, `Drawer`, `Toast`, `Tabs`, `Tooltip`, `Popover`, `Menu`, `Select`, `Combobox`, `Badge`, `BottomNav`, `PanelExpandible`, `Stepper`, `DiscoHaxball`) | en curso |
+| `kaizen-lib/ui` | Componentes (`IconButton`, `ReactionButton`, `Medidor`, `Relieve`, `LangSelector`, `Modal`, `Badge`, `BottomNav`, `PanelExpandible`, `Stepper`, `DiscoHaxball`) | en curso |
+| `kaizen-lib/efectos` | Efectos de landing: `Spotlight`, `Card3D`, `Beams`, `StarField`, `HeroText` | en curso |
 
 ## ¿Qué uso para qué?
 
@@ -44,6 +46,7 @@ alcanza, extendé el componente en vez de bypassearlo (ver `implement.md` del ha
 | Un número que cuenta hasta su valor (total, saldo, indicador) | `kaizen-lib/motion`: `AnimatedNumber` (`formato` de `Intl.NumberFormat`) | un contador con `requestAnimationFrame` — el lector lee sólo el valor final |
 | Que algo aparezca al entrar en pantalla, solo o escalonado | `kaizen-lib/motion`: `Reveal` (`preset`, `escalonado`) | un `IntersectionObserver` a mano |
 | Respuesta al apretar/pasar por encima de un botón o card | `kaizen-lib/motion`: `Pressable` (`as`, `tap`, `hover`) | un keyframe de `scale` propio |
+| Un efecto de landing (halo que sigue al mouse, card que se inclina, fondo de haces o de estrellas, título que aparece por palabras) | `kaizen-lib/efectos` | copiar efectos de Aceternity o el `StarField` de taboo/nsandev — los de acá se pausan fuera de pantalla, degradan en táctil y respetan reduced-motion |
 | Mostrar la ficha/disco de Haxball de un equipo (para elegir un equipo representativo, o para lucir el catálogo de camisetas) | `DiscoHaxball` + `CAMISETAS_HAXBALL`; el avatar (`texto`) se valida al guardarlo con `recortarAvatarHaxball` | una imagen propia — es una aproximación visual generada por SVG, no requiere ningún asset |
 | Un globo de ayuda al pasar el puntero o enfocar un control | `Tooltip` | un `title` o un tooltip a mano — no se reposiciona en los bordes ni abre con teclado |
 | Un panel flotante **no** modal anclado a un botón (filtros, detalle, formulario corto) | `Popover` | `Modal` (bloquea la página) |
@@ -127,6 +130,36 @@ desde abajo (`desdeBorde('bottom')`) y trae un tirador: arrastrarlo hacia abajo 
 un cuarto del alto (tope 160px) o con un tirón rápido cierra (`cierraPorArrastre`).
 `arrastrable={false}` lo saca; con `disableClose` no cierra. El drawer entra por su
 costado (`desdeBorde('left' | 'right')`).
+## Efectos de landing (`kaizen-lib/efectos`)
+
+Subpath propio para que su peso no caiga en `ui` ni en `motion`. **No necesita `motion`**
+ni `MotionProvider`: todo es CSS (transform, gradientes, SVG) y unas pocas líneas de JS
+que escriben variables CSS sin re-render.
+
+```tsx
+import { Spotlight, Card3D, Beams, StarField, HeroText } from 'kaizen-lib/efectos';
+
+<Spotlight style={{ borderRadius: 16 }}>…sección…</Spotlight>
+<Card3D brillo max={6}>…card…</Card3D>
+<section style={{ position: 'relative' }}><Beams cantidad={6} />…</section>
+<StarField modo="fijo" color="#bb7fff" />
+<HeroText texto={t('hero.title')} por="palabra" />
+```
+
+| Efecto | Táctil (sin hover) | Reduced-motion | Fuera de pantalla / pestaña oculta | Peso (min / gzip) |
+|---|---|---|---|---|
+| `Spotlight` | halo quieto en `reposo` (o apagado con `reposo={null}`) | igual que táctil | sin trabajo: sólo reacciona a `pointermove`, una escritura por frame | 2.2 KB / 1.1 KB |
+| `Card3D` | plana, sin listeners | plana, sin brillo | sin trabajo | 2.7 KB / 1.2 KB |
+| `Beams` | igual | sólo las guías, sin pulso | animación CSS en pausa | 2.4 KB / 1.2 KB |
+| `StarField` | igual | estrellas quietas | animación CSS en pausa | 2.4 KB / 1.2 KB |
+| `HeroText` | igual | texto final, sin animar | anima una vez, al entrar en pantalla | 2.2 KB / 1.1 KB |
+
+Pesos medidos con rolldown (minificado, `react` y `styled-components` externos); cada
+fila incluye el helper compartido. El subpath entero: 10.3 KB / 3.7 KB.
+
+`StarField` reemplaza al componente copiado en taboo y nsandev: misma distribución
+gaussiana, pero en un solo SVG con tres grupos que titilan (no una animación por
+estrella) y posiciones por `semilla`, sin render vacío antes de montar.
 
 ## Tokens
 
