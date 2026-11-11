@@ -389,7 +389,7 @@ export function Modal({
       as={animacion?.overlay.as}
       {...animacion?.overlay.props}
       $posicion={posicion}
-      onMouseDown={(event) => {
+      onMouseDown={(event: ReactMouseEvent<HTMLElement>) => {
         empezoEnOverlay.current = event.target === event.currentTarget;
       }}
       onClick={manejarClickOverlay}
