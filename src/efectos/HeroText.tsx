@@ -48,6 +48,8 @@ const Raiz = styled.h1`
      ignoran el transform de la animación, así el tramo no se mueve. */
   &[data-gradiente] {
     position: relative;
+    /* Un span inline mide 0 de ancho y alto: con gradiente el contenedor es bloque. */
+    display: block;
   }
   &[data-gradiente] [data-u] {
     color: transparent;
