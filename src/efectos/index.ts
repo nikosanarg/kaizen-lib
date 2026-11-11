@@ -1,0 +1,10 @@
+export { Spotlight } from './Spotlight';
+export type { SpotlightProps } from './Spotlight';
+export { Card3D } from './Card3D';
+export type { Card3DProps } from './Card3D';
+export { Beams } from './Beams';
+export type { BeamsProps } from './Beams';
+export { StarField, generarEstrellas } from './StarField';
+export type { StarFieldProps, Estrella } from './StarField';
+export { HeroText } from './HeroText';
+export type { HeroTextProps } from './HeroText';
