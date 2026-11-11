@@ -36,6 +36,7 @@ alcanza, extendé el componente en vez de bypassearlo (ver `implement.md` del ha
 | Los pasos de un recorrido (un formulario en etapas, un trámite), con el actual marcado | `Stepper`; la paleta se pisa con `--kz-stepper-*` (ver su docblock) | una barra de progreso propia — las líneas se llenan en orden y respeta `prefers-reduced-motion` |
 | Espaciado, radios, color, tipografía, sombra | `kaizen-lib/tokens` (`space`, `radius`, `fg`, `accent`, `font`, `shadow`, `relief`...) | un valor a mano — cada uno es una referencia `var(--kz-*)` |
 | Que algo entre y salga animado (un modal, un toast, un panel) | `kaizen-lib/motion`: `AnimatedModal`, o un preset (`fade`, `scale`, `slideUp`, `slideSide`) sobre `m.div` | importar `motion` directo o escribir duraciones a mano — los presets leen los tokens de entrada/salida |
+| Un aviso efímero (guardado, error con reintentar, deshacer) | `ToastProvider` en la raíz + `useToast()` (`kaizen-lib/ui`); animado, `AnimatedToastProvider` de `kaizen-lib/motion` | un toast o un contexto propio — las regiones aria-live, la pausa y el teclado ya están |
 | Mostrar la ficha/disco de Haxball de un equipo (para elegir un equipo representativo, o para lucir el catálogo de camisetas) | `DiscoHaxball` + `CAMISETAS_HAXBALL`; el avatar (`texto`) se valida al guardarlo con `recortarAvatarHaxball` | una imagen propia — es una aproximación visual generada por SVG, no requiere ningún asset |
 
 Ningún componente trae íconos ni banderas: los recibe como `children`/`icono`, y el
@@ -103,6 +104,12 @@ un caso puntual, `fade({ tiempos: { enter: 0.4 } })`.
 termine la salida. Foco, `Escape`, pila y `disableClose` son los de `Modal`. El
 `Modal` de `kaizen-lib/ui` sigue igual sin motion; la animación entra por su prop
 `animacion` (`ModalAnimacion`), que arma `AnimatedModal`.
+
+**`AnimatedToastProvider`.** Las mismas props que `ToastProvider` (`position`, `max`,
+`closeLabel`). Cada toast entra y sale con `slideSide('right')` (o `slideUp` en
+`bottom-center`) y la pila se reacomoda con `layout`; `domMax` se carga en diferido sólo
+ahí. `useToast()` es el mismo hook. Sin motion, `ToastProvider` de `kaizen-lib/ui` hace
+lo mismo sin animar (adaptador `ToastAnimacion`, como `ModalAnimacion`).
 
 ## Tokens
 
