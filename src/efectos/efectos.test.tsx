@@ -168,3 +168,22 @@ describe('HeroText', () => {
     expect(container.querySelector('h1')!.style.getPropertyValue('--kz-escalon')).toBe('10.0ms');
   });
 });
+
+describe('HeroText — gradiente', () => {
+  it('sin gradiente no marca nada', () => {
+    const { container } = render(<HeroText texto="uno dos" />);
+    expect(container.querySelector('h1')!.hasAttribute('data-gradiente')).toBe(false);
+  });
+
+  it('con gradiente lo expone y mide cada pieza para que corra continuo', () => {
+    const { container } = render(<HeroText texto="uno dos tres" gradiente="linear-gradient(90deg, red, blue)" />);
+    const h = container.querySelector('h1')!;
+    expect(h.hasAttribute('data-gradiente')).toBe(true);
+    expect(h.style.getPropertyValue('--kz-hero-gradiente')).toBe('linear-gradient(90deg, red, blue)');
+    expect(h.style.getPropertyValue('--kz-hero-w')).toMatch(/px$/);
+    h.querySelectorAll<HTMLElement>('[data-u]').forEach((u) => {
+      expect(u.style.getPropertyValue('--x')).toMatch(/px$/);
+      expect(u.style.getPropertyValue('--y')).toMatch(/px$/);
+    });
+  });
+});

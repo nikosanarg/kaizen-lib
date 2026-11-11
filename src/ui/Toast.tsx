@@ -1,12 +1,12 @@
 'use client';
 
 import { createContext, Fragment, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import type { ComponentType, ElementType, FocusEvent, KeyboardEvent as ReactKeyboardEvent, ReactNode } from 'react';
+import type { ComponentType, CSSProperties, ElementType, FocusEvent, KeyboardEvent as ReactKeyboardEvent, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import styled, { css } from 'styled-components';
-import { danger, fg, font, info, radius, ring, shadow, space, success, surface } from '../tokens';
+import { danger, fg, font, info, radius, ring, shadow, space, success, surface, warning } from '../tokens';
 
-export type ToastTone = 'info' | 'success' | 'error';
+export type ToastTone = 'info' | 'success' | 'warning' | 'error';
 
 export type ToastAccion = {
   label: string;
@@ -34,6 +34,8 @@ export type ToastApi = {
   show: (opciones: ToastOpciones) => string;
   info: (title: ReactNode, opciones?: Omit<ToastOpciones, 'title' | 'tone'>) => string;
   success: (title: ReactNode, opciones?: Omit<ToastOpciones, 'title' | 'tone'>) => string;
+  /** Advertencia ("Tu sesión expiró"): región polite, como info. */
+  warning: (title: ReactNode, opciones?: Omit<ToastOpciones, 'title' | 'tone'>) => string;
   error: (title: ReactNode, opciones?: Omit<ToastOpciones, 'title' | 'tone'>) => string;
   dismiss: (id: string) => void;
 };
@@ -67,23 +69,24 @@ export function useToast(): ToastApi {
 const TONOS: Record<ToastTone, string> = {
   info: info.DEFAULT,
   success: success.DEFAULT,
+  warning: warning.DEFAULT,
   error: danger.DEFAULT,
 };
 
 const POSICIONES: Record<ToastPosicion, ReturnType<typeof css>> = {
   'bottom-center': css`
-    bottom: ${space[6]};
+    bottom: calc(${space[6]} + var(--kz-toast-offset-bottom));
     left: 50%;
     transform: translateX(-50%);
     flex-direction: column-reverse;
   `,
   'bottom-right': css`
-    bottom: ${space[6]};
+    bottom: calc(${space[6]} + var(--kz-toast-offset-bottom));
     right: ${space[6]};
     flex-direction: column-reverse;
   `,
   'top-right': css`
-    top: ${space[6]};
+    top: calc(${space[6]} + var(--kz-toast-offset-top));
     right: ${space[6]};
     flex-direction: column;
   `,
@@ -275,6 +278,14 @@ export type ToastProviderProps = {
   closeLabel?: string;
   /** Entrada, salida y pila animadas. Ver `ToastAnimacion`. */
   animacion?: ToastAnimacion;
+  /**
+   * Corrimiento extra desde el borde superior, para no tapar una barra fija
+   * (p. ej. `'var(--nav-height)'`). Cualquier largo CSS. Reemplaza al default,
+   * `env(safe-area-inset-top, 0px)`: si la barra no lo incluye, sumalo con `calc`.
+   */
+  offsetTop?: string;
+  /** Igual, desde abajo (p. ej. un `BottomNav`). Default `env(safe-area-inset-bottom, 0px)`. */
+  offsetBottom?: string;
 };
 
 let contador = 0;
@@ -300,6 +311,8 @@ export function ToastProvider({
   max = 3,
   closeLabel = 'Cerrar',
   animacion,
+  offsetTop = 'env(safe-area-inset-top, 0px)',
+  offsetBottom = 'env(safe-area-inset-bottom, 0px)',
 }: ToastProviderProps) {
   const [toasts, setToasts] = useState<ToastVivo[]>([]);
   const [mounted, setMounted] = useState(false);
@@ -321,7 +334,7 @@ export function ToastProvider({
     };
     const atajo = (tone: ToastTone) => (title: ReactNode, opciones?: Omit<ToastOpciones, 'title' | 'tone'>) =>
       show({ ...opciones, title, tone });
-    return { show, dismiss, info: atajo('info'), success: atajo('success'), error: atajo('error') };
+    return { show, dismiss, info: atajo('info'), success: atajo('success'), warning: atajo('warning'), error: atajo('error') };
   }, [dismiss, max]);
 
   const Presence = animacion?.Presence ?? Fragment;
@@ -342,7 +355,10 @@ export function ToastProvider({
       {mounted
         ? createPortal(
             <Envoltura>
-              <Pila $posicion={position}>
+              <Pila
+                $posicion={position}
+                style={{ '--kz-toast-offset-top': offsetTop, '--kz-toast-offset-bottom': offsetBottom } as CSSProperties}
+              >
                 <Region role="status" aria-live="polite" aria-atomic="false">
                   {region(false)}
                 </Region>

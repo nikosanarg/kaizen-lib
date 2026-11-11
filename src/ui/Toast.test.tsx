@@ -126,3 +126,35 @@ describe('Toast — teclado y acciones', () => {
     expect(screen.getByText('d')).toBeTruthy();
   });
 });
+
+describe('Toast — ajustes 0.2.19', () => {
+  it('warning entra a la región polite con su tono', () => {
+    montar();
+    act(() => {
+      api.warning('Tu sesión expiró');
+    });
+    const status = screen.getByRole('status');
+    expect(status.textContent).toContain('Tu sesión expiró');
+    expect(status.querySelector('[data-tone="warning"]')).toBeTruthy();
+  });
+
+  it('offset por defecto respeta el safe-area; offsetTop/offsetBottom lo reemplazan', () => {
+    const { unmount } = render(
+      <ToastProvider>
+        <Captura />
+      </ToastProvider>,
+    );
+    let pila = screen.getByRole('status').parentElement!;
+    expect(pila.style.getPropertyValue('--kz-toast-offset-bottom')).toBe('env(safe-area-inset-bottom, 0px)');
+    expect(pila.style.getPropertyValue('--kz-toast-offset-top')).toBe('env(safe-area-inset-top, 0px)');
+    unmount();
+    render(
+      <ToastProvider offsetTop="var(--nav-height)" offsetBottom="64px">
+        <Captura />
+      </ToastProvider>,
+    );
+    pila = screen.getByRole('status').parentElement!;
+    expect(pila.style.getPropertyValue('--kz-toast-offset-top')).toBe('var(--nav-height)');
+    expect(pila.style.getPropertyValue('--kz-toast-offset-bottom')).toBe('64px');
+  });
+});

@@ -16,6 +16,13 @@ export type HeroTextProps = {
   escalon?: number;
   /** Tope del escalonado total, en ms: textos largos no tardan de más. Default 1200. */
   topeTotal?: number;
+  /**
+   * Gradiente del texto (`'linear-gradient(90deg, #a855f7, #ec4899)'` o una
+   * variable CSS). Corre continuo a lo largo de todo el título: cada pieza
+   * pinta su tramo. Usalo en vez de `background-clip: text` en el padre, que
+   * las piezas `inline-block` animadas rompen.
+   */
+  gradiente?: string;
   className?: string;
   id?: string;
 };
@@ -35,6 +42,21 @@ const Raiz = styled.h1`
   & [data-p] {
     display: inline-block;
     white-space: nowrap;
+  }
+  /* Gradiente continuo: cada pieza usa el gradiente del título entero
+     (--kz-hero-w × --kz-hero-h) corrido a su posición (--x, --y). offsetLeft/Top
+     ignoran el transform de la animación, así el tramo no se mueve. */
+  &[data-gradiente] {
+    position: relative;
+  }
+  &[data-gradiente] [data-u] {
+    color: transparent;
+    background-image: var(--kz-hero-gradiente);
+    background-repeat: no-repeat;
+    background-size: var(--kz-hero-w, 100%) var(--kz-hero-h, 100%);
+    background-position: calc(-1 * var(--x, 0px)) calc(-1 * var(--y, 0px));
+    -webkit-background-clip: text;
+    background-clip: text;
   }
   &[data-estado='espera'] [data-u] {
     opacity: 0;
@@ -68,10 +90,36 @@ const oculto: CSSProperties = {
  * texto visible: si el JS no llega o hay reduced-motion, se ve el estado final.
  * CSS puro: no necesita `motion` ni `MotionProvider`.
  */
-export function HeroText({ texto, por = 'palabra', as = 'h1', escalon, topeTotal = 1200, className, id }: HeroTextProps) {
+export function HeroText({ texto, por = 'palabra', as = 'h1', escalon, topeTotal = 1200, gradiente, className, id }: HeroTextProps) {
   const ref = useRef<HTMLElement>(null);
   const [anima, setAnima] = useState(false);
   const visto = useVisto(ref);
+
+  /* Mide sin re-render: escribe variables CSS en el DOM. Se repite cuando el
+     título cambia de tamaño (las palabras se reacomodan). */
+  useLayoutIso(() => {
+    const raiz = ref.current;
+    if (!gradiente || !raiz) return undefined;
+    const medir = () => {
+      raiz.style.setProperty('--kz-hero-w', `${raiz.clientWidth}px`);
+      raiz.style.setProperty('--kz-hero-h', `${raiz.clientHeight}px`);
+      raiz.querySelectorAll<HTMLElement>('[data-u]').forEach((u) => {
+        let x = u.offsetLeft;
+        let y = u.offsetTop;
+        for (let p = u.offsetParent as HTMLElement | null; p && p !== raiz; p = p.offsetParent as HTMLElement | null) {
+          x += p.offsetLeft;
+          y += p.offsetTop;
+        }
+        u.style.setProperty('--x', `${x}px`);
+        u.style.setProperty('--y', `${y}px`);
+      });
+    };
+    medir();
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const ro = new ResizeObserver(medir);
+    ro.observe(raiz);
+    return () => ro.disconnect();
+  }, [gradiente, texto, por]);
 
   useLayoutIso(() => {
     const reducido =
@@ -99,7 +147,13 @@ export function HeroText({ texto, por = 'palabra', as = 'h1', escalon, topeTotal
       id={id}
       className={className}
       data-estado={estado}
-      style={{ '--kz-escalon': `${paso.toFixed(1)}ms` } as CSSProperties}
+      data-gradiente={gradiente ? '' : undefined}
+      style={
+        {
+          '--kz-escalon': `${paso.toFixed(1)}ms`,
+          ...(gradiente ? { '--kz-hero-gradiente': gradiente } : null),
+        } as CSSProperties
+      }
     >
       <span style={oculto}>{texto}</span>
       <span aria-hidden="true">
