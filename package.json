@@ -21,6 +21,7 @@
     "./tokens": "./src/tokens/index.ts",
     "./tokens.css": "./src/tokens/defaults.css",
     "./ui": "./src/ui/index.ts",
+    "./motion": "./src/motion/index.ts",
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -31,7 +32,13 @@
   },
   "peerDependencies": {
     "react": ">=19",
-    "styled-components": ">=6"
+    "styled-components": ">=6",
+    "motion": ">=12"
+  },
+  "peerDependenciesMeta": {
+    "motion": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@testing-library/react": "16.3.2",
@@ -44,7 +51,8 @@
     "react-dom": "19.2.4",
     "styled-components": "6.4.2",
     "typescript": "5.9.3",
-    "vitest": "5.0.1"
+    "vitest": "5.0.1",
+    "motion": "12.43.0"
   },
   "engines": {
     "node": ">=20"

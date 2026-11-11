@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useId, useRef, useState } from 'react';
-import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent, ReactNode } from 'react';
+import { Fragment, useEffect, useId, useRef, useState } from 'react';
+import type { ComponentType, ElementType, KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import styled, { css } from 'styled-components';
 import { fg, font, radius, ring, scrim, shadow, space, surface } from '../tokens';
@@ -15,6 +15,19 @@ const ANCHOS = {
 } as const;
 
 export type ModalSize = keyof typeof ANCHOS;
+
+/**
+ * Adaptador de animación. `kaizen-lib/ui` no depende de ninguna librería de
+ * movimiento: quien quiera entrada y salida animadas pasa esto (lo arma
+ * `AnimatedModal` de `kaizen-lib/motion`). Con adaptador, el modal sigue
+ * dibujado mientras `Presence` termina la salida.
+ */
+export type ModalAnimacion = {
+  /** Envuelve el overlay y lo mantiene montado durante la salida. */
+  Presence: ComponentType<{ children?: ReactNode }>;
+  overlay: { as: ElementType; props?: Record<string, unknown> };
+  panel: { as: ElementType; props?: Record<string, unknown> };
+};
 
 const FOCUSABLE = [
   'a[href]',
@@ -198,7 +211,11 @@ type Props = {
   /** Nombre accesible cuando no hay `title` visible. */
   ariaLabel?: string;
   className?: string;
+  /** Entrada y salida animadas. Ver `ModalAnimacion`. */
+  animacion?: ModalAnimacion;
 };
+
+export type ModalProps = Props;
 
 /**
  * Shell único de modal: portal a `document.body`, foco atrapado y devuelto,
@@ -228,6 +245,7 @@ export function Modal({
   disableClose = false,
   ariaLabel,
   className,
+  animacion,
 }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
   const devolverFocoA = useRef<HTMLElement | null>(null);
@@ -313,10 +331,17 @@ export function Modal({
     if (dismissOnOverlay && !disableClose) onClose();
   };
 
-  if (!open || !mounted) return null;
+  if (!mounted || (!open && !animacion)) return null;
+
+  const Presence = animacion?.Presence ?? Fragment;
 
   return createPortal(
+    <Presence>
+    {open ? (
     <Overlay
+      key="kz-modal"
+      as={animacion?.overlay.as}
+      {...animacion?.overlay.props}
       onMouseDown={(event) => {
         empezoEnOverlay.current = event.target === event.currentTarget;
       }}
@@ -324,6 +349,8 @@ export function Modal({
     >
       <Panel
         ref={panelRef}
+        as={animacion?.panel.as}
+        {...animacion?.panel.props}
         className={className}
         role="dialog"
         aria-modal="true"
@@ -352,7 +379,9 @@ export function Modal({
 
         {footer ? <Footer>{footer}</Footer> : null}
       </Panel>
-    </Overlay>,
+    </Overlay>
+    ) : null}
+    </Presence>,
     document.body,
   );
 }

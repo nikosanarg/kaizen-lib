@@ -140,6 +140,15 @@
   --kz-duration-fast: 120ms;
   --kz-ease: cubic-bezier(0.2, 0, 0, 1);
 
+  /* Entrada y salida de algo que aparece o se va (modal, toast, sheet). La
+     salida es más corta y acelera: lo que se va no se hace esperar.
+     `kaizen-lib/motion` los lee del CSS en ejecución, así que pisarlos acá
+     cambia también las animaciones. */
+  --kz-duration-enter: 220ms;
+  --kz-duration-exit: 160ms;
+  --kz-ease-enter: cubic-bezier(0.2, 0, 0, 1);
+  --kz-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
   /* ---- Velo ---------------------------------------------------------------
      Fondo del overlay de un `Modal`. Negro semitransparente en los dos temas
      a propósito: no es una superficie de la escala (no tiene texto encima

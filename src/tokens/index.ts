@@ -158,6 +158,12 @@ export const font = {
 export const motion = {
   fast: 'var(--kz-duration-fast)',
   ease: 'var(--kz-ease)',
+  /** Entrada de algo que aparece (modal, toast, sheet). */
+  enter: 'var(--kz-duration-enter)',
+  easeEnter: 'var(--kz-ease-enter)',
+  /** Salida: más corta, acelera. */
+  exit: 'var(--kz-duration-exit)',
+  easeExit: 'var(--kz-ease-exit)',
 } as const;
 
 export type Surface = keyof typeof surface;
