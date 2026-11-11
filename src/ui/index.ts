@@ -39,3 +39,5 @@ export { Sheet } from './Sheet';
 export type { SheetAltura, SheetProps } from './Sheet';
 export { Drawer } from './Drawer';
 export type { DrawerLado, DrawerProps } from './Drawer';
+export { Skeleton } from './Skeleton';
+export type { SkeletonProps, SkeletonVariant } from './Skeleton';
