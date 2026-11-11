@@ -36,6 +36,11 @@ alcanza, extendé el componente en vez de bypassearlo (ver `implement.md` del ha
 | Los pasos de un recorrido (un formulario en etapas, un trámite), con el actual marcado | `Stepper`; la paleta se pisa con `--kz-stepper-*` (ver su docblock) | una barra de progreso propia — las líneas se llenan en orden y respeta `prefers-reduced-motion` |
 | Espaciado, radios, color, tipografía, sombra | `kaizen-lib/tokens` (`space`, `radius`, `fg`, `accent`, `font`, `shadow`, `relief`...) | un valor a mano — cada uno es una referencia `var(--kz-*)` |
 | Mostrar la ficha/disco de Haxball de un equipo (para elegir un equipo representativo, o para lucir el catálogo de camisetas) | `DiscoHaxball` + `CAMISETAS_HAXBALL`; el avatar (`texto`) se valida al guardarlo con `recortarAvatarHaxball` | una imagen propia — es una aproximación visual generada por SVG, no requiere ningún asset |
+| Un globo de ayuda al pasar el puntero o enfocar un control | `Tooltip` | un `title` o un tooltip a mano — no se reposiciona en los bordes ni abre con teclado |
+| Un panel flotante **no** modal anclado a un botón (filtros, detalle, formulario corto) | `Popover` | `Modal` (bloquea la página) |
+| Un menú de acciones (editar, duplicar, borrar) detrás de un botón, por defecto los tres puntos | `Menu` | un `Popover` con botones — no tendría flechas, typeahead ni roles de menú |
+| Elegir un valor de una lista corta | `Select` | un `<select>` estilado a mano |
+| Elegir un valor de una lista larga tipeando para filtrar | `Combobox` | un input + lista propios — el `activedescendant` y el teclado ya están resueltos |
 
 Ningún componente trae íconos ni banderas: los recibe como `children`/`icono`, y el
 producto elige de dónde salen (`react-icons`, `react-country-flag`, SVG propio).
@@ -316,6 +321,44 @@ chevron, para una pantalla de un solo panel. `duracionMs` (default 300) fija la 
 y el momento en que el cuerpo se oculta. `etiquetaPlegar`/`etiquetaDesplegar` traducen el
 nombre del chevron. La columna del plegable es `minmax(0, 1fr)`: una tabla ancha adentro
 se compacta o scrollea, no empuja el panel fuera de la pantalla.
+
+### Flotantes: `Tooltip`, `Popover`, `Menu`, `Select`, `Combobox`
+
+Construidos sobre [Base UI](https://base-ui.com) (`@base-ui/react`, dependencia de la
+lib: el consumidor no la instala). Base UI pone el comportamiento —posición con volteo,
+portal, foco, teclado, roles ARIA— y la lib sólo el estilo con tokens `--kz-*`. La
+entrada y salida son una transición CSS de opacidad y escala, apagada con
+`prefers-reduced-motion: reduce`. Los cinco quedan por encima de `Modal`, así que se
+pueden abrir dentro de uno.
+
+```tsx
+import { Combobox, Menu, Popover, Select, Tooltip } from 'kaizen-lib/ui';
+
+<Tooltip content="Copiar enlace"><IconButton aria-label="Copiar enlace">…</IconButton></Tooltip>
+
+<Popover trigger={<button>Filtros</button>} title="Filtrar">
+  {({ close }) => <Filtros onAplicar={close} />}
+</Popover>
+
+<Menu label="Acciones" items={[{ label: 'Editar', onSelect: editar }, { label: 'Borrar', onSelect: borrar, danger: true }]} />
+
+<Select label="Orden" value={orden} onChange={setOrden} options={[{ value: 'nombre', label: 'Nombre' }]} />
+
+<Combobox label="Paciente" placeholder="Por asignar" value={id} onChange={setId}
+  options={pacientes.map((p) => ({ value: p.id, label: p.nombre, searchText: p.email }))} />
+```
+
+- Todo disparador (`children` de `Tooltip`, `trigger` de `Popover` y `Menu`) es **un**
+  elemento que acepte `ref` y props. El tooltip es visual: el disparador lleva su propio
+  nombre accesible.
+- `Select` y `Combobox` comparten `SelectOption` (`value`, `label`, `disabled`;
+  `searchText` sólo lo usa `Combobox`). `label` es el nombre accesible. `Combobox` filtra
+  sin acentos ni mayúsculas sobre `label` + `searchText`, resalta la primera coincidencia
+  y se limpia con su botón (`onChange(null)`).
+- Peso: importar uno solo suma entre ~35 kB (`Tooltip`) y ~63 kB (`Menu`) gzip al
+  bundle del cliente; los cinco juntos, ~97 kB, porque comparten el núcleo de Base UI.
+  Quien no los importa no paga nada: `kaizen-lib/ui` no tiene efectos secundarios y el
+  bundler los descarta.
 
 ## Desarrollo
 
