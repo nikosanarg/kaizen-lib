@@ -20,3 +20,8 @@ export type { PanelExpandibleProps } from './PanelExpandible';
 export { Stepper } from './Stepper';
 export type { PasoStepper, StepperProps } from './Stepper';
 export type { ModalAnimacion, ModalProps } from './Modal';
+export type { ModalPosicion } from './Modal';
+export { Sheet } from './Sheet';
+export type { SheetAltura, SheetProps } from './Sheet';
+export { Drawer } from './Drawer';
+export type { DrawerLado, DrawerProps } from './Drawer';

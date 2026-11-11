@@ -7,3 +7,10 @@ export { AnimatedModal } from './AnimatedModal';
 export type { AnimatedModalProps } from './AnimatedModal';
 /** Reexportados para que el consumidor no importe `motion` por su cuenta. */
 export { AnimatePresence, m } from 'motion/react';
+export { desdeBorde } from './presets';
+export type { Borde } from './presets';
+export { AnimatedSheet } from './AnimatedSheet';
+export type { AnimatedSheetProps } from './AnimatedSheet';
+export { AnimatedDrawer } from './AnimatedDrawer';
+export type { AnimatedDrawerProps } from './AnimatedDrawer';
+export { cierraPorArrastre, UMBRAL_ARRASTRE } from './arrastre';

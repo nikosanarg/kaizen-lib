@@ -17,6 +17,13 @@ const ANCHOS = {
 export type ModalSize = keyof typeof ANCHOS;
 
 /**
+ * Dónde se apoya el panel. `centro` es el modal de siempre; `abajo` lo pega al
+ * borde inferior (lo usa `Sheet`) e `izquierda`/`derecha` lo pegan a un
+ * costado a toda la altura (lo usa `Drawer`).
+ */
+export type ModalPosicion = 'centro' | 'abajo' | 'izquierda' | 'derecha';
+
+/**
  * Adaptador de animación. `kaizen-lib/ui` no depende de ninguna librería de
  * movimiento: quien quiera entrada y salida animadas pasa esto (lo arma
  * `AnimatedModal` de `kaizen-lib/motion`). Con adaptador, el modal sigue
@@ -71,7 +78,7 @@ const liberarScroll = () => {
   }
 };
 
-const Overlay = styled.div`
+const Overlay = styled.div<{ $posicion: ModalPosicion }>`
   position: fixed;
   inset: 0;
   z-index: 2147483000;
@@ -80,9 +87,23 @@ const Overlay = styled.div`
   justify-content: center;
   padding: ${space[4]};
   background: ${scrim};
+
+  ${({ $posicion }) =>
+    $posicion === 'abajo' &&
+    css`
+      align-items: flex-end;
+      padding: 0;
+    `}
+  ${({ $posicion }) =>
+    ($posicion === 'izquierda' || $posicion === 'derecha') &&
+    css`
+      align-items: stretch;
+      justify-content: ${$posicion === 'izquierda' ? 'flex-start' : 'flex-end'};
+      padding: 0;
+    `}
 `;
 
-const Panel = styled.div<{ $maxWidth: string }>`
+const Panel = styled.div<{ $maxWidth: string; $posicion: ModalPosicion }>`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -97,6 +118,22 @@ const Panel = styled.div<{ $maxWidth: string }>`
   border-radius: ${radius.lg};
   box-shadow: ${shadow.xl};
   outline: none;
+
+  ${({ $posicion }) =>
+    $posicion === 'abajo' &&
+    css`
+      max-height: calc(100dvh - ${space[6]});
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    `}
+  ${({ $posicion }) =>
+    ($posicion === 'izquierda' || $posicion === 'derecha') &&
+    css`
+      max-height: none;
+      height: 100%;
+      border-radius: ${$posicion === 'izquierda' ? `0 ${radius.lg} ${radius.lg} 0` : `${radius.lg} 0 0 ${radius.lg}`};
+    `}
 `;
 
 const Header = styled.header<{ $conCierre: boolean }>`
@@ -213,6 +250,13 @@ type Props = {
   className?: string;
   /** Entrada y salida animadas. Ver `ModalAnimacion`. */
   animacion?: ModalAnimacion;
+  /** Dónde se apoya el panel. Default `centro`. Ver `ModalPosicion`. */
+  posicion?: ModalPosicion;
+  /**
+   * Contenido fijo arriba del encabezado, fuera del scroll del cuerpo. Lo usa
+   * `AnimatedSheet` para el tirador de arrastre.
+   */
+  cabecera?: ReactNode;
 };
 
 export type ModalProps = Props;
@@ -246,6 +290,8 @@ export function Modal({
   ariaLabel,
   className,
   animacion,
+  posicion = 'centro',
+  cabecera,
 }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
   const devolverFocoA = useRef<HTMLElement | null>(null);
@@ -342,6 +388,7 @@ export function Modal({
       key="kz-modal"
       as={animacion?.overlay.as}
       {...animacion?.overlay.props}
+      $posicion={posicion}
       onMouseDown={(event) => {
         empezoEnOverlay.current = event.target === event.currentTarget;
       }}
@@ -358,8 +405,10 @@ export function Modal({
         aria-label={title ? undefined : ariaLabel}
         tabIndex={-1}
         $maxWidth={maxWidth ?? ANCHOS[size]}
+        $posicion={posicion}
         onKeyDown={manejarTab}
       >
+        {cabecera}
         {showClose ? (
           <Cerrar type="button" onClick={onClose} disabled={disableClose} aria-label={closeLabel}>
             ×

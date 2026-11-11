@@ -48,3 +48,15 @@ export const slideSide = (lado: Lado = 'right', opciones?: OpcionesPreset) =>
   armar({ opacity: 0, x: lado === 'right' ? 16 : -16 }, { opacity: 1, x: 0 }, opciones);
 
 export const presets = { fade, scale, slideUp, slideSide } as const;
+
+export type Borde = 'bottom' | Lado;
+
+/**
+ * Entra desde fuera de la pantalla por un borde, el recorrido entero del
+ * panel: sheet (`bottom`) y drawer (`left`/`right`). Con
+ * `prefers-reduced-motion` queda el fade.
+ */
+export const desdeBorde = (borde: Borde = 'bottom', opciones?: OpcionesPreset) =>
+  borde === 'bottom'
+    ? armar({ opacity: 0, y: '100%' }, { opacity: 1, y: 0 }, opciones)
+    : armar({ opacity: 0, x: borde === 'right' ? '100%' : '-100%' }, { opacity: 1, x: 0 }, opciones);
