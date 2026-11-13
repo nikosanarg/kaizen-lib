@@ -1,6 +1,6 @@
 {
   "name": "kaizen-lib",
-  "version": "0.2.20",
+  "version": "0.2.21",
   "description": "Tokens y componentes compartidos entre los fronts de Kaizen.",
   "license": "MIT",
   "author": "Nicolás Sandobal",
@@ -14,6 +14,7 @@
   ],
   "files": [
     "src",
+    "dist",
     "!src/**/*.test.*",
     "!src/**/testing"
   ],
@@ -23,13 +24,20 @@
     "./ui": "./src/ui/index.ts",
     "./motion": "./src/motion/index.ts",
     "./efectos": "./src/efectos/index.ts",
+    "./camisetas": {
+      "types": "./src/camisetas/index.ts",
+      "require": "./dist/camisetas/index.js",
+      "default": "./src/camisetas/index.ts"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
-    "check": "npm run typecheck && npm run test"
+    "check": "npm run typecheck && npm run test",
+    "build": "tsc -p tsconfig.cjs.json && node -e \"require('fs').writeFileSync('dist/camisetas/package.json','{\\\"type\\\":\\\"commonjs\\\"}')\"",
+    "prepublishOnly": "npm run check && npm run build"
   },
   "peerDependencies": {
     "react": ">=19",
@@ -60,5 +68,12 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0"
+  },
+  "typesVersions": {
+    "*": {
+      "camisetas": [
+        "dist/camisetas/index.d.ts"
+      ]
+    }
   }
 }
