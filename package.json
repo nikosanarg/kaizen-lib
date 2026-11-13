@@ -1,6 +1,6 @@
 {
   "name": "kaizen-lib",
-  "version": "0.2.21",
+  "version": "0.2.22",
   "description": "Tokens y componentes compartidos entre los fronts de Kaizen.",
   "license": "MIT",
   "author": "Nicolás Sandobal",
@@ -45,6 +45,12 @@
     "motion": ">=12"
   },
   "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "styled-components": {
+      "optional": true
+    },
     "motion": {
       "optional": true
     }
