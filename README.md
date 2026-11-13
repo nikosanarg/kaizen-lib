@@ -172,6 +172,10 @@ fila incluye el helper compartido. El subpath entero: 10.3 KB / 3.7 KB.
 gaussiana, pero en un solo SVG con tres grupos que titilan (no una animación por
 estrella) y posiciones por `semilla`, sin render vacío antes de montar.
 
+## Camisetas (`kaizen-lib/camisetas`)
+
+Módulo puro, sin React: el catálogo `CAMISETAS_HAXBALL` (1 a 3 franjas, ángulo), `distanciaCamisetas` (el par de colores más parecido, portado de kaizen-bot), `rivalQueContrasta(nombre, { semilla, excluir })` (determinista) y `esCamiseta`. Es el único subpath que además se publica compilado a CommonJS en `dist/camisetas` (`npm run build`, corre solo en `prepublishOnly`), para servidores Node que no transpilan el paquete. `kaizen-lib/ui` sigue reexportando el catálogo.
+
 ## Tokens
 
 El contrato es uno solo: **los nombres**. Los valores los define cada producto.
